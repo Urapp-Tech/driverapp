@@ -1,0 +1,49 @@
+<ion-header class="big-header">
+  <div class="bg-container">
+    <div class="logo"></div>
+  </div>
+</ion-header>
+
+
+
+<ion-content>
+<div class="ion-text-center">
+<h1  style="margin:30px !important;">OTP Verification</h1>
+<p style="margin:30px !important;">An 4 digit code has been sent to<br>{{ emailAddress }}</p>
+<ion-row class="otp-row" style="margin:30px auto !important;">
+  <ion-col>
+    <ion-input class="otp-input" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]"
+      [(ngModel)]="verificationCode.digit1" #digit1Input (keydown)="onKeyUp($event, digit2Input,digit1Input,'digit1')"
+      (paste)="onPaste($event, digit2Input)">
+    </ion-input>
+  </ion-col>
+  <ion-col>
+    <ion-input class="otp-input" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]"
+      [(ngModel)]="verificationCode.digit2" #digit2Input
+      (keydown)="onKeyUp($event, digit3Input,digit1Input,'digit2');"
+      (paste)="onPaste($event, digit3Input)">
+    </ion-input>
+  </ion-col>
+  <ion-col>
+    <ion-input class="otp-input" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]"
+      [(ngModel)]="verificationCode.digit3" #digit3Input
+      (keydown)="onKeyUp($event, digit4Input,digit2Input,'digit3');"
+      (paste)="onPaste($event, digit4Input)">
+    </ion-input>
+  </ion-col>
+  <ion-col>
+    <ion-input class="otp-input" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]"
+      [(ngModel)]="verificationCode.digit4" #digit4Input (keydown)="onKeyUp($event, digit4Input, digit3Input,'digit4');"
+      (paste)="onKeyPaste($event)">
+    </ion-input>
+  </ion-col>
+</ion-row>
+
+
+
+
+<ion-row ><ion-col class="ion-padding-horizontal"><button class="btn-full color-bg-primary-black"
+      [routerLink]="['/new-password']" (click)="onSubmit()">Submit</button>
+ </ion-col></ion-row>
+</div>
+</ion-content>
