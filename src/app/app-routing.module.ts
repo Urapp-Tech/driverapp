@@ -38,6 +38,10 @@ const routes: Routes = [
   {
     path: 'set-location',
     loadChildren: () => import('./set-location/set-location.module').then( m => m.SetLocationPageModule)
+  },
+  {
+    path: 'task-location',
+    loadChildren: () => import('./task-location/task-location.module').then( m => m.TaskLocationPageModule)
   }
 ];
 @NgModule({
