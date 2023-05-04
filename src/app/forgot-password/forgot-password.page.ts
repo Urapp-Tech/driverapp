@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-forgot-password',
@@ -9,9 +10,10 @@ export class ForgotPasswordPage implements OnInit {
   resetEmail: string = '';
 
   onGetCode() {
-    // TODO: Send the email and navigate to the code verification page
+    this.router.navigate(['/otp'], { replaceUrl: false, state: {email: this.resetEmail} });
+
   }
-  constructor() { }
+  constructor(private router:Router) { }
 
   ngOnInit() {
   }
