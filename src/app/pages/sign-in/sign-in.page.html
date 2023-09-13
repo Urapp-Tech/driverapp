@@ -1,0 +1,62 @@
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-title>signIn</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+<ion-header class="big-header">
+  <div class="bg-container">
+    <div class="logo"></div>
+  </div>
+</ion-header>
+<ion-content>
+  <div class="login-head">Driver Login</div>
+  <div class="subhead">Please enter the details below to continue</div>
+  <!-- <ion-list> -->
+  <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm)">
+    <div class="ion-padding-horizontal">
+      <ion-item>
+        <ion-input
+          name="email"
+          id="email"
+          type="email"
+          ngModel="email"
+          [clearInput]="true"
+          placeholder="User ID/Email"
+        >
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <!-- <ion-label position="stacked">Input with clear button </ion-label> -->
+        <ion-input
+          [type]="isVisible ? 'text' : 'password'"
+          placeholder="Password"
+          name="password"
+          id="password"
+          ngModel="password"
+          minlength="3"
+          maxlength="30"
+        >
+        </ion-input>
+        <ion-icon
+          [name]="isVisible ? 'eye-off' : 'eye'"
+          item-right
+          (click)="onEyeClick()"
+        >
+        </ion-icon>
+      </ion-item>
+    </div>
+    <!-- </ion-list> -->
+
+    <div class="forgot" [routerLink]="['/forgot-password']">
+      Forgot Password
+    </div>
+
+    <ion-row>
+      <ion-col class="ion-padding-horizontal">
+        <button class="btn-full color-bg-primary-black" type="submit">
+          Login
+        </button>
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>

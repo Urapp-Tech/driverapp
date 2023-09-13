@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ColorPipe } from '../color.pipe';
+import { ColorPipe } from '../pipes/color.pipe';
+import { IonicModule } from '@ionic/angular';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [ColorPipe],
-  imports: [CommonModule],
-  exports: [ColorPipe]
+  exports: [CommonModule, FormsModule, IonicModule, ColorPipe],
 })
-export class SharedModule { }
+export class SharedModule {}

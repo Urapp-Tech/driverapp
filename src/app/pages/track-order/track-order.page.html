@@ -1,0 +1,108 @@
+<ion-header class="big-header" style="height: 60px">
+  <ion-toolbar color="none" class="bg-container ion-text-center">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title style="color: white">Track Order</ion-title>
+    <ion-buttons slot="end">
+      <ion-icon name="bag-outline" class="bag-icon"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-row style="background: lightgrey; padding: 4px 6px">
+    <ion-col style="max-width: 50px; margin-left: 10px">
+      <ion-avatar class="avatar"
+        ><img src="./assets/icons/track.png" class="truck"
+      /></ion-avatar>
+    </ion-col>
+    <ion-col
+      style="
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+        color: #1a1a1a;
+      "
+      class="text-lg bold"
+    >
+      <ion-label>Your order is in progress...</ion-label>
+    </ion-col>
+  </ion-row>
+  <ion-row class="text-md bold" style="padding: 10px">
+    <ion-col> {{orders[0].title}} </ion-col>
+    <ion-col style="text-align: right" class="text-sm">
+      <ion-label
+        >{{orders[0].items}} items | {{orders[0].price | currency}}</ion-label
+      >
+    </ion-col>
+  </ion-row>
+  <div *ngFor="let item of actions; let i=index;" class="purchased-item">
+    <ion-row
+      [style.filter]="i>2?'grayscale(100%)':'none'"
+      [style.opacity]="i>2?'0.4':'1'"
+    >
+      <ion-col
+        class="quantity-col text-sm"
+        style="
+          text-align: center;
+          background: linear-gradient(to right, black 50%, transparent 50%)
+            no-repeat center/1px 100%;
+        "
+      >
+        <ion-row
+          ><ion-col
+            style="
+              text-align: center;
+              background: linear-gradient(to right, black 50%, transparent 50%)
+                no-repeat center/1px 100%;
+            "
+          >
+            <ion-icon
+              *ngIf="i<3"
+              name="checkmark-circle-outline"
+              size="large"
+              style="background-color: white"
+            ></ion-icon>
+            <ion-icon
+              *ngIf="i>2"
+              name="ellipse-outline"
+              size="large"
+              style="background-color: white"
+            ></ion-icon> </ion-col
+        ></ion-row>
+      </ion-col>
+      <ion-col class="circle-col">
+        <!-- Add circle-progress component here -->
+        <circle-progress
+          [percent]="item.percent"
+          [radius]="50"
+          [outerStrokeWidth]="3"
+          [innerStrokeWidth]="2"
+          [outerStrokeColor]="item.color | color"
+          [animation]="true"
+          [animationDuration]="300"
+        >
+          <!-- Add icon here -->
+        </circle-progress>
+        <ion-icon [src]="item.icon" class="icons"></ion-icon>
+      </ion-col>
+      <ion-col class="details-col text-sm">
+        <ion-row
+          ><ion-col class="bold"
+            ><span [style.color]="item.color | color" class="text-xsm">
+              {{ item.type }}</span
+            ></ion-col
+          ></ion-row
+        >
+        <ion-row><ion-col class="bold">{{ item.info }}</ion-col></ion-row>
+        <ion-row
+          ><ion-col
+            >{{ item.time !== 'Date, Time' ? (item.time | date: 'HH:mm, MMM dd
+            YY') : item.time}}</ion-col
+          ></ion-row
+        >
+      </ion-col>
+    </ion-row>
+  </div>
+</ion-content>

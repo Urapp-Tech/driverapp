@@ -1,0 +1,68 @@
+.purchased-item {
+  margin: 0px 15px;
+  // border-bottom: 1px solid lightgrey;
+}
+
+.date-col,
+.quantity-col {
+  display: flex;
+  align-items: center;
+  max-width: max-content;
+}
+
+.quantity-button {
+  --border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  font-size: 25px;
+  --padding-end: 0;
+  --padding-start: 1px;
+}
+
+.quantity-number {
+  font-weight: bold;
+  flex-direction: column;
+}
+
+.circle-col {
+  min-width: 70px;
+  max-width: 70px;
+  font-size: 24px;
+  position: relative;
+}
+.details-col {
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  ion-col {
+    padding: 1px;
+  }
+  ion-row {
+    margin-bottom: 2px;
+  }
+}
+
+.icons {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  margin: auto;
+}
+.truck {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  height: 16px;
+  margin: auto;
+  width: auto;
+}
+.avatar {
+  width: 40px;
+  height: 40px;
+  background: #c1c1c1;
+  border-radius: 50%;
+}
