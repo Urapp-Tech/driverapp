@@ -1,0 +1,7 @@
+{
+  "name": "ionic-minimal",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
