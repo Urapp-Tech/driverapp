@@ -189,6 +189,7 @@ export class TasksPage implements OnInit {
   }
   navigateToNextPage(item: any) {
     const navigationExtras: NavigationExtras = {
+      replaceUrl: false,
       state: {
         item: item,
       },
