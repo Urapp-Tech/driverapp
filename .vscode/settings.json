@@ -1,3 +1,10 @@
 {
-  "cSpell.words": ["devkit", "geolocation", "haptics", "ionicons", "nanotask"]
+  "cSpell.words": [
+    "devkit",
+    "geolocation",
+    "haptics",
+    "ionicons",
+    "localforage",
+    "nanotask"
+  ]
 }

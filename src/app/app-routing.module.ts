@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { authenticationGuard } from './guards/authentication.guard';
 
 const routes: Routes = [
   // {
@@ -8,8 +9,8 @@ const routes: Routes = [
   // },
   {
     path: '',
-    loadChildren: () =>
-      import('./pages/sign-in/sign-in.module').then((m) => m.SignInPageModule),
+    pathMatch: 'full',
+    redirectTo: 'tasks',
   },
   {
     path: 'sign-in',
@@ -36,11 +37,13 @@ const routes: Routes = [
       import('./pages/otp/otp.module').then((m) => m.OtpPageModule),
   },
   {
+    canActivate: [authenticationGuard],
     path: 'tasks',
     loadChildren: () =>
       import('./pages/tasks/tasks.module').then((m) => m.TasksPageModule),
   },
   {
+    canActivate: [authenticationGuard],
     path: 'track-order',
     loadChildren: () =>
       import('./pages/track-order/track-order.module').then(
@@ -48,6 +51,7 @@ const routes: Routes = [
       ),
   },
   {
+    canActivate: [authenticationGuard],
     path: 'set-location',
     loadChildren: () =>
       import('./pages/set-location/set-location.module').then(
@@ -55,6 +59,7 @@ const routes: Routes = [
       ),
   },
   {
+    canActivate: [authenticationGuard],
     path: 'task-location',
     loadChildren: () =>
       import('./pages/task-location/task-location.module').then(
