@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-new-password',
   templateUrl: './new-password.page.html',
   styleUrls: ['./new-password.page.scss'],
 })
-export class NewPasswordPage implements OnInit {
+export class NewPasswordPage {
   newPassword: string = '';
   confirmPassword: string = '';
 
@@ -14,10 +14,6 @@ export class NewPasswordPage implements OnInit {
 
   newPassEyeIcon = 'eye';
   confirmPassEyeIcon = 'eye';
-
-  constructor() {}
-
-  ngOnInit() {}
 
   toggleNewPasswordVisibility() {
     this.newPasswordVisible = !this.newPasswordVisible;

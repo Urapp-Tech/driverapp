@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
   templateUrl: './otp.page.html',
   styleUrls: ['./otp.page.scss'],
 })
-export class OtpPage implements OnInit {
+export class OtpPage {
   emailAddress: string = 'Vincent-bo@gmail.com'; // Replace with the actual email address
   otp!: string;
   showOtpComponent = true;
@@ -28,10 +28,10 @@ export class OtpPage implements OnInit {
     },
   };
   constructor(router: Router) {
-    let currentNav = router.getCurrentNavigation();
+    const currentNav = router.getCurrentNavigation();
     console.log(currentNav, 'current');
     if (currentNav !== null) {
-      let email = currentNav.extras.state?.['email'];
+      const email = currentNav.extras.state?.['email'];
       if (email) this.emailAddress = currentNav.extras.state?.['email'];
     }
   }
@@ -42,10 +42,6 @@ export class OtpPage implements OnInit {
 
   setVal(val: any) {
     this.ngOtpInput.setValue(val);
-  }
-
-  ngOnInit(): void {
-    // throw new Error('Method not implemented.');
   }
 
   onSubmit() {

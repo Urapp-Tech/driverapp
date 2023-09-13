@@ -6,8 +6,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./track-order.page.scss'],
 })
 export class TrackOrderPage implements OnInit {
-  constructor() {}
-
   orders: any = [
     {
       title: 'EZ-45867',
@@ -110,7 +108,7 @@ export class TrackOrderPage implements OnInit {
       const matchingType: any = this.orderTypes.find(
         (type) => type.type === order.type
       );
-      for (let prop in matchingType) {
+      for (const prop in matchingType) {
         order[prop] = matchingType[prop];
       }
     });

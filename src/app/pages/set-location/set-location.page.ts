@@ -1,14 +1,14 @@
 // Import required modules
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { LocationService } from 'src/app/services/location.service';
-declare var google: any;
+declare const google: any;
 
 @Component({
   selector: 'app-set-location',
   templateUrl: './set-location.page.html',
   styleUrls: ['./set-location.page.scss'],
 })
-export class SetLocationPage implements OnInit {
+export class SetLocationPage implements AfterViewInit {
   // Get reference to HTML element for map
   @ViewChild('map')
   mapRef!: ElementRef<HTMLElement>;
@@ -21,8 +21,6 @@ export class SetLocationPage implements OnInit {
   };
 
   constructor(private readonly locationService: LocationService) {}
-
-  async ngOnInit() {}
 
   // Get the current location using Capacitor's geolocation API
   async getCurrentLocation() {
@@ -38,7 +36,7 @@ export class SetLocationPage implements OnInit {
 
   // After view initialization, initialize the map and add a marker for the current location
   async ngAfterViewInit() {
-    let map = await this.initMap();
+    const map = await this.initMap();
     console.log(map);
     this.addCurrentLocation();
   }
@@ -65,7 +63,7 @@ export class SetLocationPage implements OnInit {
 
   // Add a marker to the map at the specified location with optional icon
   addMarker(latlng: any, icon: any = null) {
-    let position: any = {
+    const position: any = {
       lat: latlng.lat,
       lng: latlng.lng,
     };
