@@ -1,15 +1,15 @@
 import { Location } from '@angular/common';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { LocationService } from 'src/app/services/location.service';
-declare var google: any;
+declare const google: any;
 
 @Component({
   selector: 'app-task-location',
   templateUrl: './task-location.page.html',
   styleUrls: ['./task-location.page.scss'],
 })
-export class TaskLocationPage implements OnInit {
+export class TaskLocationPage implements AfterViewInit {
   @ViewChild('map')
   mapRef!: ElementRef<HTMLElement>;
   currentLocation: { lat: number; lng: number } = { lat: 0, lng: 0 };
@@ -30,8 +30,6 @@ export class TaskLocationPage implements OnInit {
     private readonly locationService: LocationService
   ) {}
 
-  async ngOnInit() {}
-
   async getCurrentLocation() {
     const [latitude, longitude] =
       await this.locationService.getCurrentPosition();
@@ -44,13 +42,13 @@ export class TaskLocationPage implements OnInit {
   }
 
   async ngAfterViewInit() {
-    let currentNav = await this.router.getCurrentNavigation();
+    const currentNav = await this.router.getCurrentNavigation();
     console.log(currentNav, 'current');
     if (currentNav !== null) {
       this.item = currentNav.extras.state?.['item'];
     }
 
-    let map = await this.initMap();
+    const map = await this.initMap();
 
     if (this.item && map) {
       console.log(this.item, 'item');
@@ -86,7 +84,7 @@ export class TaskLocationPage implements OnInit {
 
   previousMarker: any;
   addMarker(latlng: any, icon: any = null) {
-    let position: any = {
+    const position: any = {
       lat: latlng.lat,
       lng: latlng.lng,
     };

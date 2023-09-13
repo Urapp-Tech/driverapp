@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NavController } from '@ionic/angular';
 import { SignInService } from 'src/app/services/sign-in.service';
@@ -10,14 +10,13 @@ import { SingInPayload, SingInResponse } from 'src/app/types/sign-in.types';
   templateUrl: './sign-in.page.html',
   styleUrls: ['./sign-in.page.scss'],
 })
-export class SignInPage implements OnInit {
+export class SignInPage {
   constructor(
     private readonly signInService: SignInService,
     private readonly navController: NavController,
     private readonly userService: UserService
   ) {}
   isVisible: boolean = false;
-  ngOnInit() {}
   onEyeClick() {
     this.isVisible = !this.isVisible;
   }

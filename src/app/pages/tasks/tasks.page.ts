@@ -182,7 +182,7 @@ export class TasksPage implements OnInit {
       const matchingType: any = this.orderTypes.find(
         (type: any) => type.type === order.status
       );
-      for (let prop in matchingType) {
+      for (const prop in matchingType) {
         order[prop] = matchingType[prop];
       }
     });

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
   templateUrl: './forgot-password.page.html',
   styleUrls: ['./forgot-password.page.scss'],
 })
-export class ForgotPasswordPage implements OnInit {
+export class ForgotPasswordPage {
   resetEmail: string = '';
 
   onGetCode() {
@@ -16,6 +16,4 @@ export class ForgotPasswordPage implements OnInit {
     });
   }
   constructor(private router: Router) {}
-
-  ngOnInit() {}
 }
