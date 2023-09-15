@@ -6,8 +6,8 @@
     </ion-buttons>
 
     <ion-buttons slot="end">
-      <ion-button *ngIf="item" href="tel:{item.phone}"
-        ><ion-icon name="call-outline" color="primary"> </ion-icon>
+      <ion-button *ngIf="item" href="tel:{item.phone}">
+        <ion-icon name="call-outline" color="primary"> </ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -30,8 +30,8 @@
         <ion-row style="color: grey">{{ item.address}} </ion-row>
       </ion-col>
       <ion-col class="quantity-col text-sm">
-        <ion-row
-          ><ion-col style="text-align: right">
+        <ion-row>
+          <ion-col style="text-align: right">
             <ion-row class="quantity-number">{{ item.time }} </ion-row>
             <ion-row
               class="quantity-number text-sm"

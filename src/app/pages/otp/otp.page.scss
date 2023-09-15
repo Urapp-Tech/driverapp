@@ -13,3 +13,9 @@
   width: 240px;
   margin: auto;
 }
+
+.color-bg-primary-black {
+  &:disabled {
+    opacity: 0.6;
+  }
+}

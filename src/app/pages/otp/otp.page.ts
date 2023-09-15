@@ -1,5 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
+import { NgOtpInputComponent } from 'ng-otp-input';
+import { AuthenticationStoreService } from 'src/app/services/auth-store.service';
+import { Nullable } from 'src/app/types/common.types';
 
 @Component({
   selector: 'app-otp',
@@ -7,15 +11,15 @@ import { Router } from '@angular/router';
   styleUrls: ['./otp.page.scss'],
 })
 export class OtpPage {
-  emailAddress: string = 'Vincent-bo@gmail.com'; // Replace with the actual email address
-  otp!: string;
-  showOtpComponent = true;
-  @ViewChild('ngOtpInput', { static: false }) ngOtpInput: any;
+  email: Nullable<string> = null;
+  otp: string = '';
+  @ViewChild(NgOtpInputComponent, { static: true })
+  ngOtpInput!: NgOtpInputComponent;
   config = {
-    allowNumbersOnly: false,
     length: 4,
     isPasswordInput: false,
     disableAutoFocus: false,
+    allowNumbersOnly: true,
     placeholder: '',
     inputStyles: {
       width: '50px',
@@ -27,12 +31,15 @@ export class OtpPage {
       'font-weight': '600',
     },
   };
-  constructor(router: Router) {
-    const currentNav = router.getCurrentNavigation();
-    console.log(currentNav, 'current');
-    if (currentNav !== null) {
-      const email = currentNav.extras.state?.['email'];
-      if (email) this.emailAddress = currentNav.extras.state?.['email'];
+  constructor(
+    private readonly navController: NavController,
+    private readonly authenticationStoreService: AuthenticationStoreService
+  ) {}
+
+  ionViewWillEnter() {
+    this.email = this.authenticationStoreService.getResetPasswordEmail();
+    if (!this.email) {
+      this.navController.navigateBack('/forgot-password');
     }
   }
 
@@ -40,13 +47,11 @@ export class OtpPage {
     this.otp = otp;
   }
 
-  setVal(val: any) {
-    this.ngOtpInput.setValue(val);
-  }
-
   onSubmit() {
-    const code = this.otp;
-    console.log(code);
-    if (code) alert(code);
+    if (this.otp.length !== 4) {
+      return;
+    }
+    this.authenticationStoreService.setResetPasswordOTP(this.otp);
+    this.navController.navigateForward('/new-password');
   }
 }

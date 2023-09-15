@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { NavController } from '@ionic/angular';
+import { ForgotPasswordResponse } from 'src/app/types/forgot-password.types';
+import { ForgotPasswordService } from './forgot-password.service';
 import { Router } from '@angular/router';
+import { AuthenticationStoreService } from 'src/app/services/auth-store.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -7,13 +12,36 @@ import { Router } from '@angular/router';
   styleUrls: ['./forgot-password.page.scss'],
 })
 export class ForgotPasswordPage {
-  resetEmail: string = '';
+  constructor(
+    private readonly navController: NavController,
+    private readonly forgotPasswordService: ForgotPasswordService,
+    private readonly authenticationStoreService: AuthenticationStoreService
+  ) {}
 
-  onGetCode() {
-    this.router.navigate(['/otp'], {
-      replaceUrl: false,
-      state: { email: this.resetEmail },
+  onForgotPassword(forgotPasswordForm: NgForm) {
+    if (forgotPasswordForm.form.invalid) {
+      return;
+    }
+    const email = forgotPasswordForm.form.controls['email'].value.toLowerCase();
+    const handleForgotPasswordResponse = (response: ForgotPasswordResponse) => {
+      console.log(
+        `file: forgot-password.page.ts:27 -> ForgotPasswordPage -> handleForgotPasswordResponse -> response:`,
+        response
+      );
+      if (response.code === 200) {
+        this.authenticationStoreService.setResetPasswordEmail(email);
+        this.navController.navigateForward('/otp');
+      }
+    };
+    const handleForgotPasswordError = (error: any) => {
+      console.log(
+        `file: forgot-password.page.ts:36 -> ForgotPasswordPage -> handleForgotPasswordError -> error:`,
+        error
+      );
+    };
+    this.forgotPasswordService.forgotPassword(email).subscribe({
+      next: handleForgotPasswordResponse,
+      error: handleForgotPasswordError,
     });
   }
-  constructor(private router: Router) {}
 }
