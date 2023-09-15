@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NavController } from '@ionic/angular';
-import { SignInService } from 'src/app/services/sign-in.service';
+import { SignInService } from 'src/app/pages/sign-in/sign-in.service';
 import { UserService } from 'src/app/services/user.service';
 import { SingInPayload, SingInResponse } from 'src/app/types/sign-in.types';
 
@@ -20,22 +20,18 @@ export class SignInPage {
   onEyeClick() {
     this.isVisible = !this.isVisible;
   }
-  forgot() {
-    console.log('Forgot');
-  }
-
   onLogin(loginForm: NgForm) {
     if (loginForm.form.invalid) {
       return;
     }
     const singInPayload: SingInPayload = {
-      email: loginForm.form.controls['email'].value,
+      email: loginForm.form.controls['email'].value.toLowerCase(),
       password: loginForm.form.controls['password'].value,
     };
     const handleLoginResponse = (response: SingInResponse) => {
       if (response.code === 200) {
         this.userService.setUser(response.data);
-        this.navController.navigateForward('/set-location');
+        this.navController.navigateRoot('/set-location');
       }
     };
     const handleLoginError = (error: any) => {

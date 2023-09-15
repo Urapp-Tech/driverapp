@@ -1,11 +1,11 @@
 <ion-header class="big-header" style="height: 60px">
   <ion-toolbar color="none" class="bg-container ion-text-center">
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-back-button> </ion-back-button>
     </ion-buttons>
     <ion-title style="color: white">Track Order</ion-title>
     <ion-buttons slot="end">
-      <ion-icon name="bag-outline" class="bag-icon"></ion-icon>
+      <ion-icon name="bag-outline" class="bag-icon"> </ion-icon>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -13,9 +13,9 @@
 <ion-content>
   <ion-row style="background: lightgrey; padding: 4px 6px">
     <ion-col style="max-width: 50px; margin-left: 10px">
-      <ion-avatar class="avatar"
-        ><img src="./assets/icons/track.png" class="truck"
-      /></ion-avatar>
+      <ion-avatar class="avatar">
+        <img src="./assets/icons/track.png" class="truck" />
+      </ion-avatar>
     </ion-col>
     <ion-col
       style="
@@ -50,8 +50,8 @@
             no-repeat center/1px 100%;
         "
       >
-        <ion-row
-          ><ion-col
+        <ion-row>
+          <ion-col
             style="
               text-align: center;
               background: linear-gradient(to right, black 50%, transparent 50%)
@@ -63,14 +63,17 @@
               name="checkmark-circle-outline"
               size="large"
               style="background-color: white"
-            ></ion-icon>
+            >
+            </ion-icon>
             <ion-icon
               *ngIf="i>2"
               name="ellipse-outline"
               size="large"
               style="background-color: white"
-            ></ion-icon> </ion-col
-        ></ion-row>
+            >
+            </ion-icon>
+          </ion-col>
+        </ion-row>
       </ion-col>
       <ion-col class="circle-col">
         <!-- Add circle-progress component here -->
@@ -85,23 +88,25 @@
         >
           <!-- Add icon here -->
         </circle-progress>
-        <ion-icon [src]="item.icon" class="icons"></ion-icon>
+        <ion-icon [src]="item.icon" class="icons"> </ion-icon>
       </ion-col>
       <ion-col class="details-col text-sm">
-        <ion-row
-          ><ion-col class="bold"
-            ><span [style.color]="item.color | color" class="text-xsm">
+        <ion-row>
+          <ion-col class="bold">
+            <span [style.color]="item.color | color" class="text-xsm">
               {{ item.type }}</span
-            ></ion-col
-          ></ion-row
-        >
-        <ion-row><ion-col class="bold">{{ item.info }}</ion-col></ion-row>
-        <ion-row
-          ><ion-col
+            >
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="bold">{{ item.info }}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col
             >{{ item.time !== 'Date, Time' ? (item.time | date: 'HH:mm, MMM dd
             YY') : item.time}}</ion-col
-          ></ion-row
-        >
+          >
+        </ion-row>
       </ion-col>
     </ion-row>
   </div>

@@ -6,5 +6,25 @@
     "ionicons",
     "localforage",
     "nanotask"
-  ]
+  ],
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#483fc7",
+    "activityBar.background": "#483fc7",
+    "activityBar.foreground": "#e7e7e7",
+    "activityBar.inactiveForeground": "#e7e7e799",
+    "activityBarBadge.background": "#d4726b",
+    "activityBarBadge.foreground": "#15202b",
+    "commandCenter.border": "#e7e7e799",
+    "sash.hoverBorder": "#483fc7",
+    "statusBar.background": "#3730a3",
+    "statusBar.foreground": "#e7e7e7",
+    "statusBarItem.hoverBackground": "#483fc7",
+    "statusBarItem.remoteBackground": "#3730a3",
+    "statusBarItem.remoteForeground": "#e7e7e7",
+    "titleBar.activeBackground": "#3730a3",
+    "titleBar.activeForeground": "#e7e7e7",
+    "titleBar.inactiveBackground": "#3730a399",
+    "titleBar.inactiveForeground": "#e7e7e799"
+  },
+  "peacock.color": "#3730a3"
 }

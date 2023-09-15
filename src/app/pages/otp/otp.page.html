@@ -8,24 +8,24 @@
   <div class="ion-text-center">
     <h1 style="margin: 30px !important">OTP Verification</h1>
     <p style="margin: 30px !important">
-      An 4 digit code has been sent to<br />{{ emailAddress }}
+      An 4 digit code has been sent to<br />{{ email }}
     </p>
     <ion-row>
       <ion-col>
         <ng-otp-input
           #ngOtpInput
           (onInputChange)="onOtpChange($event)"
-          *ngIf="showOtpComponent"
           [config]="config"
         >
         </ng-otp-input>
       </ion-col>
     </ion-row>
-    <ion-row
-      ><ion-col class="ion-padding-horizontal"
-        ><button
+    <ion-row>
+      <ion-col class="ion-padding-horizontal">
+        <button
+          [disabled]="otp.length !== 4"
           class="btn-full color-bg-primary-black"
-          [routerLink]="['/new-password']"
+          type="button"
           (click)="onSubmit()"
         >
           Submit
