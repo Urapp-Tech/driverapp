@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NavController } from '@ionic/angular';
 import { SignInService } from 'src/app/pages/sign-in/sign-in.service';
@@ -11,11 +11,9 @@ import { SingInPayload, SingInResponse } from 'src/app/types/sign-in.types';
   styleUrls: ['./sign-in.page.scss'],
 })
 export class SignInPage {
-  constructor(
-    private readonly signInService: SignInService,
-    private readonly navController: NavController,
-    private readonly userService: UserService
-  ) {}
+  private readonly signInService = inject(SignInService);
+  private readonly navController = inject(NavController);
+  private readonly userService = inject(UserService);
   isVisible: boolean = false;
   onEyeClick() {
     this.isVisible = !this.isVisible;

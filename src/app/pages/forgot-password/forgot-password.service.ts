@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { APP_CONFIG, AppConfig } from 'src/app/app.module';
+import { APP_CONFIG, AppConfig } from 'src/app/app-config.provider';
 import {
   ForgotPasswordPayload,
   ForgotPasswordResponse,

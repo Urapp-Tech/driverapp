@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-track-order',
   templateUrl: './track-order.page.html',
   styleUrls: ['./track-order.page.scss'],
 })
-export class TrackOrderPage implements OnInit {
+export class TrackOrderPage {
   orders: any = [
     {
       title: 'EZ-45867',
@@ -95,7 +95,7 @@ export class TrackOrderPage implements OnInit {
   getCssColor(val: any) {
     const cssVars = getComputedStyle(document.documentElement);
   }
-  ngOnInit() {
+  ionViewWillEnter() {
     // List of order types with corresponding icons and colors
 
     this.mergeInfo(this.orders);

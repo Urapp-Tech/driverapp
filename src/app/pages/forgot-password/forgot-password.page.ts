@@ -1,10 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NavController } from '@ionic/angular';
+import { AuthenticationStoreService } from 'src/app/services/auth-store.service';
 import { ForgotPasswordResponse } from 'src/app/types/forgot-password.types';
 import { ForgotPasswordService } from './forgot-password.service';
-import { Router } from '@angular/router';
-import { AuthenticationStoreService } from 'src/app/services/auth-store.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -12,11 +11,11 @@ import { AuthenticationStoreService } from 'src/app/services/auth-store.service'
   styleUrls: ['./forgot-password.page.scss'],
 })
 export class ForgotPasswordPage {
-  constructor(
-    private readonly navController: NavController,
-    private readonly forgotPasswordService: ForgotPasswordService,
-    private readonly authenticationStoreService: AuthenticationStoreService
-  ) {}
+  private readonly navController = inject(NavController);
+  private readonly forgotPasswordService = inject(ForgotPasswordService);
+  private readonly authenticationStoreService = inject(
+    AuthenticationStoreService
+  );
 
   onForgotPassword(forgotPasswordForm: NgForm) {
     if (forgotPasswordForm.form.invalid) {
@@ -39,7 +38,7 @@ export class ForgotPasswordPage {
         error
       );
     };
-    this.forgotPasswordService.forgotPassword(email).subscribe({
+    this.forgotPasswordService.forgotPassword(email)?.subscribe({
       next: handleForgotPasswordResponse,
       error: handleForgotPasswordError,
     });

@@ -1,14 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NavController } from '@ionic/angular';
 import { AuthenticationStoreService } from 'src/app/services/auth-store.service';
+import { ToastService } from 'src/app/services/toast.service';
 import { Nullable } from 'src/app/types/common.types';
 import {
   NewPasswordPayload,
   NewPasswordResponse,
 } from 'src/app/types/new-password.types';
 import { NewPasswordService } from './new-password.service';
-import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-new-password',
@@ -16,6 +16,12 @@ import { ToastService } from 'src/app/services/toast.service';
   styleUrls: ['./new-password.page.scss'],
 })
 export class NewPasswordPage {
+  private readonly authenticationStoreService = inject(
+    AuthenticationStoreService
+  );
+  private readonly navController = inject(NavController);
+  private readonly newPasswordService = inject(NewPasswordService);
+  private readonly toastService = inject(ToastService);
   email: Nullable<string> = null;
   otp: Nullable<string> = null;
 
@@ -24,13 +30,6 @@ export class NewPasswordPage {
 
   newPasswordVisible: boolean = false;
   confirmPasswordVisible: boolean = false;
-
-  constructor(
-    private readonly authenticationStoreService: AuthenticationStoreService,
-    private readonly navController: NavController,
-    private readonly newPasswordService: NewPasswordService,
-    private readonly toastService: ToastService
-  ) {}
 
   toggleNewPasswordVisibility() {
     this.newPasswordVisible = !this.newPasswordVisible;

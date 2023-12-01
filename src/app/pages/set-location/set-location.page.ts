@@ -1,7 +1,12 @@
 // Import required modules
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { LocationService } from 'src/app/services/location.service';
-declare const google: any;
 
 @Component({
   selector: 'app-set-location',
@@ -9,6 +14,7 @@ declare const google: any;
   styleUrls: ['./set-location.page.scss'],
 })
 export class SetLocationPage implements AfterViewInit {
+  private readonly locationService = inject(LocationService);
   // Get reference to HTML element for map
   @ViewChild('map')
   mapRef!: ElementRef<HTMLElement>;
@@ -19,8 +25,6 @@ export class SetLocationPage implements AfterViewInit {
     url: './assets/img/car-icon.png',
     size: { width: 32, height: 32 },
   };
-
-  constructor(private readonly locationService: LocationService) {}
 
   // Get the current location using Capacitor's geolocation API
   async getCurrentLocation() {

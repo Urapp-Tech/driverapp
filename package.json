@@ -34,6 +34,7 @@
     "ionicons": "^7.1.2",
     "ng-circle-progress": "^1.7.1",
     "ng-otp-input": "^1.9.3",
+    "ngx-pipes": "^3.2.2",
     "rxjs": "~7.8.1",
     "tslib": "^2.6.2",
     "zone.js": "^0.13.3"
@@ -51,6 +52,7 @@
     "@angular/language-service": "^16.2.4",
     "@capacitor/cli": "5.3.0",
     "@ionic/angular-toolkit": "^9.0.0",
+    "@types/google.maps": "^3.54.10",
     "@types/node": "^20.6.0",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",

@@ -5,6 +5,7 @@ import { TasksPageRoutingModule } from './tasks-routing.module';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { SharedModule } from '../../shared/shared.module';
 import { TasksPage } from './tasks.page';
+import { TasksService } from './tasks.service';
 
 @NgModule({
   imports: [
@@ -33,5 +34,6 @@ import { TasksPage } from './tasks.page';
     }),
   ],
   declarations: [TasksPage],
+  providers: [TasksService],
 })
 export class TasksPageModule {}
