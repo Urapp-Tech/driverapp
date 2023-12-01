@@ -13,4 +13,18 @@ export const API_PATHS = {
     `/api/v1/app/app-user/resetPassword/driver`,
     environment.baseUrl
   ).toString(),
+  getAssignedOrders: new URL(
+    `/api/v1/app/appOrderDelivery/assignedOrders`,
+    environment.baseUrl
+  ).toString(),
+  getAssignedOrderDetails: (orderId: string) =>
+    new URL(
+      `/api/v1/app/appOrderDelivery/assignedOrders/${orderId}`,
+      environment.baseUrl
+    ).toString(),
+
+  setOrderStatus: new URL(
+    `/api/v1/app/appOrderDelivery/setOrderStatus`,
+    environment.baseUrl
+  ).toString(),
 };

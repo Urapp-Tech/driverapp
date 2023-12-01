@@ -1,10 +1,10 @@
 <ion-header class="big-header" style="height: 0px">
   <ion-toolbar color="none">
     <ion-buttons slot="start">
-      <ion-back-button color="primary"> </ion-back-button>
-      <ion-menu-button color="light"> </ion-menu-button>
+      <ion-button (click)="myGoBack('/tasks')" fill="clear" class="back-button">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
     </ion-buttons>
-
     <ion-buttons slot="end">
       <ion-button *ngIf="item" href="tel:{item.phone}">
         <ion-icon name="call-outline" color="primary"> </ion-icon>
@@ -13,39 +13,22 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content #container>
-  <ion-back-button> </ion-back-button>
-  <div class="item" *ngIf="item" style="padding: 10px">
-    <ion-row class="bold text-md ion-nowrap" style="padding-left: 5px">
-      {{ item.title }}
-    </ion-row>
-    <ion-row>
-      <ion-col class="details-col text-sm">
-        <ion-row class="text-sm" style="color: grey"
-          >Order id: {{ item.orderId }}
-        </ion-row>
-        <ion-row [style.color]="item.color | color" class="text-xsm">
-          {{ item.status }}
-        </ion-row>
-        <ion-row style="color: grey">{{ item.address}} </ion-row>
-      </ion-col>
-      <ion-col class="quantity-col text-sm">
-        <ion-row>
-          <ion-col style="text-align: right">
-            <ion-row class="quantity-number">{{ item.time }} </ion-row>
-            <ion-row
-              class="quantity-number text-sm"
-              style="color: var(--color-blue)"
-              >{{ item.phone }}
-            </ion-row>
-          </ion-col>
-        </ion-row>
-      </ion-col>
-    </ion-row>
-  </div>
+<ion-content>
+  <ng-container *ngIf="item">
+    <app-task-card
+      [orderNumber]="item.appOrder.orderNumber"
+      [orderStatus]="item.status"
+      [customerPhone]="item.appUser.phone"
+      [pickupLocationMarker]="pickupLocationMarker"
+      [dropLocationMarker]="dropLocationMarker"
+      (moveToLocation)="moveToLocation($event)"
+    ></app-task-card>
+  </ng-container>
+
   <div class="map" #map></div>
+
   <div class="lower-part">
-    <ion-button expand="block" class="btn-full" (click)="startDriving()">
+    <ion-button expand="block" class="btn-full" (click)="buttonAction()">
       {{ buttonLabel }}
     </ion-button>
   </div>

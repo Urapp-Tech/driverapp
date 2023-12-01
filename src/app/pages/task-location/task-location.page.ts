@@ -1,8 +1,31 @@
-import { Location } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  ViewChild,
+  inject,
+} from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import {
+  AlertController,
+  IonRouterOutlet,
+  NavController,
+} from '@ionic/angular';
 import { LocationService } from 'src/app/services/location.service';
-declare const google: any;
+import {
+  AssignedOrder,
+  AssignedOrderDetails,
+  DeliveryStatus,
+  GetAssignedOrderDetailsResponse,
+  SetOrderStatusPayload,
+  SetOrderStatusResponse,
+} from 'src/app/types/tasks.types';
+import {
+  DELIVERY_STATUS,
+  TEMP_PICKUP_ADDRESS,
+} from 'src/app/utilities/constants';
+import { ionGoBack } from 'src/app/utilities/ionic-go-back-function';
+import { TaskLocationService } from './task-location.service';
 
 @Component({
   selector: 'app-task-location',
@@ -10,25 +33,44 @@ declare const google: any;
   styleUrls: ['./task-location.page.scss'],
 })
 export class TaskLocationPage implements AfterViewInit {
-  @ViewChild('map')
-  mapRef!: ElementRef<HTMLElement>;
-  currentLocation: { lat: number; lng: number } = { lat: 0, lng: 0 };
+  private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly navController = inject(NavController);
+  // private readonly location = inject(Location);
+  private readonly locationService = inject(LocationService);
+  private readonly taskLocationService = inject(TaskLocationService);
+  private readonly ionRouterOutlet = inject(IonRouterOutlet);
+  private readonly alertController = inject(AlertController);
+
+  @ViewChild('map', { static: true })
+  mapRef!: ElementRef<HTMLDivElement>;
+  currentLocation: google.maps.LatLngLiteral = { lat: 0, lng: 0 };
   selectedOption: string = '';
-  newMap!: any;
+  newMap!: google.maps.Map;
   directionsService = new google.maps.DirectionsService();
   directionsDisplay = new google.maps.DirectionsRenderer();
-  item!: any;
-  selectedItem: any;
+  item!: AssignedOrder;
+  orderDeliveryId!: string | null;
   buttonLabel: string = 'Start Driving';
-  carIcon = {
-    url: './assets/img/car-icon.png',
-    size: { width: 32, height: 32 },
-  };
-  constructor(
-    private readonly router: Router,
-    private readonly location: Location,
-    private readonly locationService: LocationService
-  ) {}
+
+  dropLocationMarker: google.maps.Marker | null = null;
+  pickupLocationMarker: google.maps.Marker | null = null;
+  startMarker: google.maps.Marker | null = null;
+
+  myGoBack = ionGoBack({
+    ionRouterOutlet: this.ionRouterOutlet,
+    navController: this.navController,
+  });
+
+  async ngAfterViewInit() {
+    this.orderDeliveryId =
+      this.activatedRoute.snapshot.queryParamMap.get('orderId');
+    if (!this.orderDeliveryId) {
+      this.navController.back();
+      return;
+    }
+    await this.initMap();
+    this.getAssignedOrderDetails(this.orderDeliveryId);
+  }
 
   async getCurrentLocation() {
     const [latitude, longitude] =
@@ -37,31 +79,15 @@ export class TaskLocationPage implements AfterViewInit {
       lat: latitude,
       lng: longitude,
     };
-    console.log('Current location:', this.currentLocation);
+    console.log('currentLocation :>> ', this.currentLocation);
     return this.currentLocation;
   }
 
-  async ngAfterViewInit() {
-    const currentNav = await this.router.getCurrentNavigation();
-    console.log(currentNav, 'current');
-    if (currentNav !== null) {
-      this.item = currentNav.extras.state?.['item'];
-    }
-
-    const map = await this.initMap();
-
-    if (this.item && map) {
-      console.log(this.item, 'item');
-      // To add location from address
-      this.item.location = await this.getLocationFromAddress(this.item.address);
-
-      this.directionsDisplay.setMap(this.newMap);
-      this.setRoute();
-    }
-  }
   async addCurrentLocation() {
     //this.addMarker(this.currentLocation, carIcon);
-    this.addMarker(this.currentLocation, this.carIcon);
+    if (this.startMarker) {
+      this.startMarker.setPosition(this.currentLocation);
+    }
 
     //Code for adding marker onclick
     /*google.maps.event.addListener(this.newMap, 'click', (event: any) => {
@@ -69,6 +95,7 @@ export class TaskLocationPage implements AfterViewInit {
       this.addMarker(latlng);
     }); */
   }
+
   async initMap() {
     if (this.mapRef) {
       const currentPosition = await this.getCurrentLocation();
@@ -82,52 +109,55 @@ export class TaskLocationPage implements AfterViewInit {
     return this.newMap;
   }
 
-  previousMarker: any;
-  addMarker(latlng: any, icon: any = null) {
-    const position: any = {
-      lat: latlng.lat,
-      lng: latlng.lng,
-    };
-
+  addMarker(
+    coordinates: google.maps.LatLngLiteral,
+    icon:
+      | string
+      | google.maps.Icon
+      | google.maps.Symbol
+      | null
+      | undefined = null
+  ) {
     const marker = new google.maps.Marker({
-      position: position,
+      position: coordinates,
       map: this.newMap,
       icon: icon,
     });
-    console.log('Marker added:', marker);
+    console.log('marker added:>> ', marker);
     return marker;
   }
-  async setRoute() {
-    if (this.previousMarker != null) {
-      this.previousMarker.setMap(null);
-    }
-    // Save the current marker as the previous marker
-    this.previousMarker = this.addMarker(this.item.location);
-    // Display directions from the first marker to the current marker
-    if (this.previousMarker != null) {
-      const start = {
-        lat: this.currentLocation.lat,
-        lng: this.currentLocation.lng,
-      };
-      const end = this.item.location;
-      console.log(end, 'end');
-      this.calculateAndDisplayRoute(start, end);
-    }
+
+  async setRoute(location: google.maps.LatLngLiteral) {
+    await this.getCurrentLocation();
+    const start: google.maps.LatLngLiteral = {
+      lat: this.currentLocation.lat,
+      lng: this.currentLocation.lng,
+    };
+    const end: google.maps.LatLngLiteral = location;
+    console.log('end :>> ', end);
+    this.calculateAndDisplayRoute(start, end);
   }
-  calculateAndDisplayRoute(start: any, end: any) {
+
+  calculateAndDisplayRoute(
+    start: google.maps.LatLngLiteral,
+    end: google.maps.LatLngLiteral
+  ) {
+    this.directionsDisplay.setMap(this.newMap);
     this.directionsService.route(
       {
         origin: start,
         destination: end,
-        travelMode: 'DRIVING',
+        travelMode: google.maps.TravelMode.DRIVING,
       },
-      (response: any, status: any) => {
-        if (status === 'OK') {
+      (
+        response: google.maps.DirectionsResult | null,
+        status: google.maps.DirectionsStatus
+      ) => {
+        if (status === 'OK' && response) {
           this.directionsDisplay.setOptions({ suppressMarkers: true });
-
           const startLocation = response.routes[0].legs[0].start_location;
           const endLocation = response.routes[0].legs[0].end_location;
-          const startMarker = new google.maps.Marker({
+          this.startMarker = new google.maps.Marker({
             position: response.routes[0].legs[0].start_location,
             map: this.newMap,
             icon: {
@@ -139,34 +169,291 @@ export class TaskLocationPage implements AfterViewInit {
               ),
             },
           });
-          console.log(startMarker);
-
           this.directionsDisplay.setDirections(response);
         } else {
-          window.alert('Directions request failed due to ' + status);
+          console.log('response :>> ', response);
+          console.log('status :>> ', status);
         }
       }
     );
   }
 
-  startDriving() {
-    if (this.buttonLabel === 'Start Driving') {
-      // Do something when button is clicked in "Start Driving" state
-      this.buttonLabel = this.item.status;
-    } else {
-      // Do something when button is clicked in "Stop Driving" state
-      this.location.back();
+  acceptDelivery() {
+    if (!this.orderDeliveryId) {
+      return;
+    }
+    const payload: SetOrderStatusPayload = {
+      appOrderDelivery: this.orderDeliveryId,
+      status: DELIVERY_STATUS.ACCEPTED,
+    };
+    this.setOrderStatus(payload);
+  }
+
+  pickupItem() {
+    if (!this.orderDeliveryId) {
+      return;
+    }
+    const payload: SetOrderStatusPayload = {
+      appOrderDelivery: this.orderDeliveryId,
+      status: DELIVERY_STATUS.IN_DELIVERY,
+    };
+    this.setOrderStatus(payload);
+  }
+
+  deliverItem() {
+    if (!this.orderDeliveryId) {
+      return;
+    }
+    const payload: SetOrderStatusPayload = {
+      appOrderDelivery: this.orderDeliveryId,
+      status: DELIVERY_STATUS.DELIVERED,
+    };
+    this.setOrderStatus(payload);
+  }
+
+  buttonAction() {
+    if (this.item.status === DELIVERY_STATUS.NEW) {
+      this.acceptDelivery();
+      return;
+    }
+    if (this.item.status === DELIVERY_STATUS.ACCEPTED) {
+      this.pickupItem();
+      return;
+    }
+    if (this.item.status === DELIVERY_STATUS.IN_DELIVERY) {
+      this.deliverItem();
+      return;
+    }
+    if (this.item.status === DELIVERY_STATUS.DELIVERED) {
+      this.myGoBack('/tasks');
+      return;
     }
   }
+
+  getButtonLabel(status: DeliveryStatus) {
+    if (status === DELIVERY_STATUS.NEW) {
+      return 'Accept';
+    }
+    if (status === DELIVERY_STATUS.ACCEPTED) {
+      return 'Pick Up';
+    }
+    if (status === DELIVERY_STATUS.IN_DELIVERY) {
+      return 'Delivered';
+    }
+    if (status === DELIVERY_STATUS.DELIVERED) {
+      return 'Back';
+    }
+    return 'Start Driving';
+  }
+
+  // startDriving() {
+  //   if (this.item.status === DELIVERY_STATUS.NEW) {
+  //   }
+  //   if (this.buttonLabel === 'Start Driving') {
+  //     // Do something when button is clicked in "Start Driving" state
+  //     this.buttonLabel = this.getButtonLabel(this.item.status);
+  //   } else {
+  //     // Do something when button is clicked in "Stop Driving" state
+  //     this.location.back();
+  //   }
+  // }
+
   async getLocationFromAddress(address: string) {
     console.log(address);
     const geocoder = new google.maps.Geocoder();
     const result = await geocoder.geocode({ address });
     console.log(geocoder, result);
-    const location = {
+    const location: google.maps.LatLngLiteral = {
       lat: result.results[0].geometry.location.lat(),
       lng: result.results[0].geometry.location.lng(),
     };
     return location;
+  }
+
+  moveToLocation(marker: google.maps.Marker) {
+    const markerPosition = marker.getPosition();
+    if (markerPosition) {
+      this.newMap.setCenter(markerPosition);
+    }
+  }
+
+  async handleStatusNew(data: AssignedOrderDetails) {
+    if (this.pickupLocationMarker) {
+      this.pickupLocationMarker.setMap(null);
+      this.pickupLocationMarker = null;
+    }
+    const pickupLocation =
+      await this.getLocationFromAddress(TEMP_PICKUP_ADDRESS);
+    const shopIcon = {
+      url: 'assets/img/shop-pin-icon.png',
+      scaledSize: new google.maps.Size(32, 44),
+    };
+    this.pickupLocationMarker = this.addMarker(pickupLocation, shopIcon);
+    this.pickupLocationMarker.setMap(this.newMap);
+
+    if (this.dropLocationMarker) {
+      this.dropLocationMarker.setMap(null);
+      this.dropLocationMarker = null;
+    }
+    const dropLocation = await this.getLocationFromAddress(
+      data.order.appUserAddress.address
+    );
+    const homeIcon = {
+      url: 'assets/img/home-pin-icon.png',
+      scaledSize: new google.maps.Size(32, 44),
+    };
+    this.dropLocationMarker = this.addMarker(dropLocation, homeIcon);
+    this.dropLocationMarker.setMap(this.newMap);
+  }
+
+  async handleStatusDelivered(data: AssignedOrderDetails) {
+    if (this.pickupLocationMarker) {
+      this.pickupLocationMarker.setMap(null);
+      this.pickupLocationMarker = null;
+    }
+    const pickupLocation =
+      await this.getLocationFromAddress(TEMP_PICKUP_ADDRESS);
+    const shopIcon = {
+      url: 'assets/img/shop-pin-icon.png',
+      scaledSize: new google.maps.Size(32, 44),
+    };
+    this.pickupLocationMarker = this.addMarker(pickupLocation, shopIcon);
+    this.pickupLocationMarker.setMap(this.newMap);
+
+    if (this.dropLocationMarker) {
+      this.dropLocationMarker.setMap(null);
+      this.dropLocationMarker = null;
+    }
+    const dropLocation = await this.getLocationFromAddress(
+      data.order.appUserAddress.address
+    );
+    const homeIcon = {
+      url: 'assets/img/home-pin-icon.png',
+      scaledSize: new google.maps.Size(32, 44),
+    };
+    this.dropLocationMarker = this.addMarker(dropLocation, homeIcon);
+    this.dropLocationMarker.setMap(this.newMap);
+  }
+
+  async handleStatusAccepted() {
+    if (this.dropLocationMarker) {
+      this.dropLocationMarker.setMap(null);
+      this.dropLocationMarker = null;
+    }
+    if (this.pickupLocationMarker) {
+      this.pickupLocationMarker.setMap(null);
+      this.pickupLocationMarker = null;
+    }
+    const pickupLocation =
+      await this.getLocationFromAddress(TEMP_PICKUP_ADDRESS);
+    const shopIcon = {
+      url: 'assets/img/shop-pin-icon.png',
+      scaledSize: new google.maps.Size(32, 44),
+    };
+    this.pickupLocationMarker = this.addMarker(pickupLocation, shopIcon);
+    this.pickupLocationMarker.setMap(this.newMap);
+    const pickupLocationPosition = this.pickupLocationMarker
+      .getPosition()
+      ?.toJSON();
+    if (pickupLocationPosition) {
+      this.setRoute(pickupLocationPosition);
+    }
+  }
+
+  async handleStatusInDelivery(data: AssignedOrderDetails) {
+    if (this.pickupLocationMarker) {
+      this.pickupLocationMarker.setMap(null);
+      this.pickupLocationMarker = null;
+    }
+    if (this.dropLocationMarker) {
+      this.dropLocationMarker.setMap(null);
+      this.dropLocationMarker = null;
+    }
+    const dropLocation = await this.getLocationFromAddress(
+      data.order.appUserAddress.address
+    );
+    const homeIcon = {
+      url: 'assets/img/home-pin-icon.png',
+      scaledSize: new google.maps.Size(32, 44),
+    };
+    this.dropLocationMarker = this.addMarker(dropLocation, homeIcon);
+    this.dropLocationMarker.setMap(this.newMap);
+    const dropLocationPosition = this.dropLocationMarker
+      .getPosition()
+      ?.toJSON();
+    if (dropLocationPosition) {
+      this.setRoute(dropLocationPosition);
+    }
+  }
+
+  getAssignedOrderDetails(id: string) {
+    const handleResponse = async (
+      response: GetAssignedOrderDetailsResponse
+    ) => {
+      console.log('response :>> ', response);
+      if (response.success) {
+        this.item = response.data.order;
+        this.buttonLabel = this.getButtonLabel(this.item.status);
+        this.directionsDisplay.setMap(null);
+        this.startMarker?.setMap(null);
+        if (response.data.order.status === DELIVERY_STATUS.NEW) {
+          this.handleStatusNew(response.data);
+          return;
+        }
+        if (response.data.order.status === DELIVERY_STATUS.ACCEPTED) {
+          this.handleStatusAccepted();
+          return;
+        }
+        if (response.data.order.status === DELIVERY_STATUS.IN_DELIVERY) {
+          this.handleStatusInDelivery(response.data);
+          return;
+        }
+        if (this.item.status === DELIVERY_STATUS.DELIVERED) {
+          this.handleStatusDelivered(response.data);
+          return;
+        }
+      }
+    };
+    const handleError = (error: any) => {
+      console.error('error :>> ', error);
+    };
+    this.taskLocationService.getAssignedOrderDetails(id).subscribe({
+      next: handleResponse,
+      error: handleError,
+    });
+  }
+
+  setOrderStatus(payload: SetOrderStatusPayload) {
+    const handleResponse = async (response: SetOrderStatusResponse) => {
+      if (response.success) {
+        this.buttonLabel = this.getButtonLabel(response.data.order.status);
+        this.item.status = response.data.order.status;
+        this.directionsDisplay.setMap(null);
+        this.startMarker?.setMap(null);
+        if (response.data.order.status === DELIVERY_STATUS.NEW) {
+          this.handleStatusNew(response.data);
+          return;
+        }
+        if (response.data.order.status === DELIVERY_STATUS.ACCEPTED) {
+          this.handleStatusAccepted();
+          return;
+        }
+        if (response.data.order.status === DELIVERY_STATUS.IN_DELIVERY) {
+          this.handleStatusInDelivery(response.data);
+          return;
+        }
+        if (this.item.status === DELIVERY_STATUS.DELIVERED) {
+          this.handleStatusDelivered(response.data);
+          return;
+        }
+      }
+    };
+    const handleError = (error: any) => {
+      console.error('error :>> ', error);
+    };
+    this.taskLocationService.setOrderStatus(payload).subscribe({
+      next: handleResponse,
+      error: handleError,
+    });
   }
 }

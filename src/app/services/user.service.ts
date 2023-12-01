@@ -1,15 +1,18 @@
-import { Injectable } from '@angular/core';
-import { StorageService } from './storage.service';
+import { Injectable, inject } from '@angular/core';
+import { NavController } from '@ionic/angular';
 import { Nullable } from '../types/common.types';
 import { SingInData } from '../types/sign-in.types';
-import { NavController } from '@ionic/angular';
+import { StorageService } from './storage.service';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  constructor(
-    private readonly storageService: StorageService,
-    private readonly navController: NavController
-  ) {}
+  private readonly storageService = inject(StorageService);
+  private readonly navController = inject(NavController);
+
+  constructor() {
+    console.log('this.storageService :>> ', this.storageService);
+  }
+
   private user: Nullable<SingInData> = null;
 
   getUser(): Nullable<SingInData> {

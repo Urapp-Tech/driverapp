@@ -1,13 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { API_PATHS } from 'src/environments/API-PATHS';
-import { SingInPayload, SingInResponse } from '../../types/sign-in.types';
+import { GetAssignedOrdersResponse } from '../../types/tasks.types';
 
 @Injectable()
-export class SignInService {
+export class TasksService {
   private readonly httpClient = inject(HttpClient);
 
-  signIn(singInPayload: SingInPayload) {
-    return this.httpClient.post<SingInResponse>(API_PATHS.login, singInPayload);
+  getAssignedOrders() {
+    return this.httpClient.get<GetAssignedOrdersResponse>(
+      API_PATHS.getAssignedOrders
+    );
   }
 }

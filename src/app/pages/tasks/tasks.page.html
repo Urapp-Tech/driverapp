@@ -4,7 +4,7 @@
       <ion-back-button> </ion-back-button>
       <ion-menu-button color="light"> </ion-menu-button>
     </ion-buttons>
-    <ion-title style="color: white">Today's Tasks</ion-title>
+    <ion-title style="color: white">Assigned's Tasks </ion-title>
     <ion-buttons slot="end">
       <ion-toggle
         justify="end"
@@ -21,40 +21,48 @@
 </ion-header>
 
 <ion-content>
-  <div
-    *ngFor="let item of orders"
-    class="purchased-item"
-    (click)="navigateToNextPage(item)"
-  >
-    <ion-row>
-      <ion-col class="bold text-md ion-nowrap">{{ item.title }} </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col class="details-col text-sm">
-        <ion-row>
-          <ion-col class="text-sm" style="color: grey"
-            >Order id: {{ item.orderId }}</ion-col
+  <ng-container *ngIf="assignedOrders.length">
+    <div
+      *ngFor="let order of assignedOrders; trackBy: trackById"
+      class="purchased-item"
+      (click)="navigateToNextPage(order)"
+    >
+      <ion-row>
+        <ion-col class="bold text-md ion-nowrap">{{ order.id }} </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="details-col text-sm">
+          <ion-row>
+            <ion-col class="text-sm" style="color: grey">
+              Order id: {{ order.appOrder.orderNumber }}
+            </ion-col>
+          </ion-row>
+          <ion-row
+            class="text-xsm"
+            [ngStyle]="{'color': orderStatusColor[order.status]}"
           >
-        </ion-row>
-        <ion-row [style.color]="item.color | color" class="text-xsm">
-          {{ item.status }}</ion-row
-        >
-        <ion-row>
-          <ion-col style="color: grey">{{ item.address}}</ion-col>
-        </ion-row>
-      </ion-col>
-      <ion-col class="quantity-col text-sm">
-        <ion-row>
-          <ion-col style="text-align: right">
-            <ion-row class="quantity-number">{{ item.time }}</ion-row>
-            <ion-row
-              class="quantity-number text-sm"
-              style="color: var(--color-blue)"
-              >{{ item.phone }}</ion-row
-            >
-          </ion-col>
-        </ion-row>
-      </ion-col>
-    </ion-row>
-  </div>
+            {{ orderStatusText[order.status] }}
+          </ion-row>
+        </ion-col>
+        <ion-col class="quantity-col text-sm">
+          <ion-row>
+            <ion-col style="text-align: right">
+              <ion-row class="quantity-number">
+                {{ order.dropDateTime }}
+              </ion-row>
+              <ion-row
+                class="quantity-number text-sm"
+                style="color: var(--color-blue)"
+              >
+                {{ order.appUser.phone }}
+              </ion-row>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+        <ion-col size="12" style="color: grey">
+          {{ order.appUserAddress.address }}
+        </ion-col>
+      </ion-row>
+    </div>
+  </ng-container>
 </ion-content>

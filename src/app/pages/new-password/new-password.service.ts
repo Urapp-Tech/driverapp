@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { APP_CONFIG, AppConfig } from 'src/app/app.module';
+import { Inject, Injectable, inject } from '@angular/core';
+import { APP_CONFIG, AppConfig } from 'src/app/app-config.provider';
 import {
   NewPasswordPayload,
   NewPasswordResponse,
@@ -9,10 +9,10 @@ import { API_PATHS } from 'src/environments/API-PATHS';
 
 @Injectable()
 export class NewPasswordService {
-  constructor(
-    private readonly httpClient: HttpClient,
-    @Inject(APP_CONFIG) private readonly appConfig: AppConfig
-  ) {}
+  private readonly httpClient = inject(HttpClient);
+
+  constructor(@Inject(APP_CONFIG) private readonly appConfig: AppConfig) {}
+
   resetPassword(partialNewPasswordPayload: Omit<NewPasswordPayload, 'tenant'>) {
     const forgotPasswordPayload: NewPasswordPayload = {
       ...partialNewPasswordPayload,

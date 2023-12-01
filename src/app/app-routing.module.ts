@@ -3,14 +3,10 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { authenticationGuard } from './guards/authentication.guard';
 
 const routes: Routes = [
-  // {
-  //   path: '',
-  //   loadChildren: () => import('./pages/tabs/tabs.module').then(m => m.TabsPageModule)
-  // },
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'tasks',
+    redirectTo: 'sign-in',
   },
   {
     path: 'sign-in',

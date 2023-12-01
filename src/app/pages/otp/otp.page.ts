@@ -1,5 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, ViewChild, inject } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { NgOtpInputComponent } from 'ng-otp-input';
 import { AuthenticationStoreService } from 'src/app/services/auth-store.service';
@@ -11,6 +10,10 @@ import { Nullable } from 'src/app/types/common.types';
   styleUrls: ['./otp.page.scss'],
 })
 export class OtpPage {
+  private readonly navController = inject(NavController);
+  private readonly authenticationStoreService = inject(
+    AuthenticationStoreService
+  );
   email: Nullable<string> = null;
   otp: string = '';
   @ViewChild(NgOtpInputComponent, { static: true })
@@ -31,10 +34,6 @@ export class OtpPage {
       'font-weight': '600',
     },
   };
-  constructor(
-    private readonly navController: NavController,
-    private readonly authenticationStoreService: AuthenticationStoreService
-  ) {}
 
   ionViewWillEnter() {
     this.email = this.authenticationStoreService.getResetPasswordEmail();
