@@ -92,9 +92,10 @@ export class TrackOrderPage {
   ];
   // List of order types to use for randomly generating a type
 
-  getCssColor(val: any) {
+  /* getCssColor(val: any) {
     const cssVars = getComputedStyle(document.documentElement);
-  }
+  } */
+
   ionViewWillEnter() {
     // List of order types with corresponding icons and colors
 

@@ -39,9 +39,10 @@ export class TasksPage {
     Accepted: '#93C5FD',
   };
 
-  getCssColor(val: any) {
+  /* getCssColor(val: any) {
     const cssVars = getComputedStyle(document.documentElement);
-  }
+  } */
+
   ionViewWillEnter() {
     // List of order types with corresponding icons and colors
     this.getAssignedOrders();

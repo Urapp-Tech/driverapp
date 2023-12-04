@@ -5,9 +5,7 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { throwError } from 'rxjs';
-import { Observable } from 'rxjs/internal/Observable';
-import { catchError } from 'rxjs/operators';
+import { Observable, catchError, throwError } from 'rxjs';
 import { UserService } from '../services/user.service';
 
 @Injectable()

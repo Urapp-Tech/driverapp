@@ -19,12 +19,8 @@ export class SetLocationPage implements AfterViewInit {
   @ViewChild('map')
   mapRef!: ElementRef<HTMLElement>;
   // Initialize variables for current location, new map, and car icon
-  currentLocation: { lat: number; lng: number } = { lat: 0, lng: 0 };
+  currentLocation: google.maps.LatLngLiteral = { lat: 0, lng: 0 };
   newMap!: any;
-  carIcon = {
-    url: './assets/img/car-icon.png',
-    size: { width: 32, height: 32 },
-  };
 
   // Get the current location using Capacitor's geolocation API
   async getCurrentLocation() {
@@ -34,20 +30,23 @@ export class SetLocationPage implements AfterViewInit {
       lat: latitude,
       lng: longitude,
     };
-    console.log('Current location:', this.currentLocation);
     return this.currentLocation;
   }
 
   // After view initialization, initialize the map and add a marker for the current location
   async ngAfterViewInit() {
-    const map = await this.initMap();
-    console.log(map);
+    await this.initMap();
     this.addCurrentLocation();
   }
 
   // Add a marker for the current location
   async addCurrentLocation() {
-    this.addMarker(this.currentLocation, this.carIcon);
+    await this.getCurrentLocation();
+    const carIcon = {
+      url: 'assets/img/car-icon.png',
+      anchor: new google.maps.Point(25, 25),
+    };
+    this.addMarker(this.currentLocation, carIcon);
   }
 
   // Initialize the map centered on the current location
@@ -66,14 +65,13 @@ export class SetLocationPage implements AfterViewInit {
   }
 
   // Add a marker to the map at the specified location with optional icon
-  addMarker(latlng: any, icon: any = null) {
-    const position: any = {
-      lat: latlng.lat,
-      lng: latlng.lng,
-    };
+  addMarker(
+    latLng: google.maps.LatLngLiteral,
+    icon: google.maps.Icon | null = null
+  ) {
     // Create a new marker object
     const marker = new google.maps.Marker({
-      position: position,
+      position: latLng,
       map: this.newMap,
       icon: icon,
     });
