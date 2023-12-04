@@ -1,12 +1,14 @@
 {
+  "typescript.preferences.autoImportFileExcludePatterns": [
+    "@ionic/angular/common",
+    "@ionic/angular/standalone"
+  ],
   "cSpell.words": [
     "devkit",
-    "Geocoded",
     "geolocation",
     "haptics",
     "ionicons",
     "localforage",
-    "nanotask",
-    "ZINDEX"
+    "styleext"
   ]
 }
