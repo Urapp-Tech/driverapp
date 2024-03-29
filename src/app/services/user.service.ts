@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { Nullable } from '../types/common.types';
 import { SingInData } from '../types/sign-in.types';
@@ -6,12 +6,10 @@ import { StorageService } from './storage.service';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  private readonly storageService = inject(StorageService);
-  private readonly navController = inject(NavController);
-
-  constructor() {
-    console.log('this.storageService :>> ', this.storageService);
-  }
+  constructor(
+    private readonly storageService: StorageService,
+    private readonly navController: NavController
+  ) {}
 
   private user: Nullable<SingInData> = null;
 
@@ -23,7 +21,7 @@ export class UserService {
   }
 
   async initialize() {
-    const user = await this.storageService.get('USER');
+    const user = await this.storageService.get<SingInData>('USER');
     if (user) {
       this.user = user;
       return;

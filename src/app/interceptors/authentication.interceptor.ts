@@ -4,13 +4,13 @@ import {
   HttpInterceptor,
   HttpRequest,
 } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { UserService } from '../services/user.service';
 
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
-  private readonly userService = inject(UserService);
+  constructor(private readonly userService: UserService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     const modifiedRequest = this.attachHeaders(req);
@@ -29,19 +29,22 @@ export class AuthenticationInterceptor implements HttpInterceptor {
   attachHeaders(request: HttpRequest<any>): HttpRequest<any> {
     const userData = this.userService.getUser();
     const token: string | undefined = userData?.token;
-
+    let modifiedRequest = request;
     if (token) {
-      request = request.clone({
-        headers: request.headers.set('Authorization', token),
+      modifiedRequest = modifiedRequest.clone({
+        headers: modifiedRequest.headers.set('Authorization', token),
       });
     }
 
-    if (!request.headers.has('Content-Type')) {
-      request = request.clone({
-        headers: request.headers.set('Content-Type', 'application/json'),
+    if (!modifiedRequest.headers.has('Content-Type')) {
+      modifiedRequest = modifiedRequest.clone({
+        headers: modifiedRequest.headers.set(
+          'Content-Type',
+          'application/json'
+        ),
       });
     }
 
-    return request.clone(request);
+    return modifiedRequest.clone(modifiedRequest);
   }
 }

@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 /// <reference types="@types/google.maps" />
 
 import { enableProdMode } from '@angular/core';
@@ -12,4 +14,4 @@ if (environment.production) {
 
 platformBrowserDynamic()
   .bootstrapModule(AppModule)
-  .catch((err) => console.log(err));
+  .catch((error) => console.log(error));

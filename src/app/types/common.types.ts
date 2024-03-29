@@ -1,5 +1,5 @@
 export type Nullable<T> = T | null;
 
-export type keyOf<T> = keyof T;
+export type KeyOf<T> = keyof T;
 
-export type ValueOf<T> = T[keyOf<T>];
+export type ValueOf<T> = T[KeyOf<T>];

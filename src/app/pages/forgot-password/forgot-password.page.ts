@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NavController } from '@ionic/angular';
 import { AuthenticationStoreService } from 'src/app/services/auth-store.service';
@@ -11,11 +11,11 @@ import { ForgotPasswordService } from './forgot-password.service';
   styleUrls: ['./forgot-password.page.scss'],
 })
 export class ForgotPasswordPage {
-  private readonly navController = inject(NavController);
-  private readonly forgotPasswordService = inject(ForgotPasswordService);
-  private readonly authenticationStoreService = inject(
-    AuthenticationStoreService
-  );
+  constructor(
+    private readonly navController: NavController,
+    private readonly forgotPasswordService: ForgotPasswordService,
+    private readonly authenticationStoreService: AuthenticationStoreService
+  ) {}
 
   onForgotPassword(forgotPasswordForm: NgForm) {
     if (forgotPasswordForm.form.invalid) {

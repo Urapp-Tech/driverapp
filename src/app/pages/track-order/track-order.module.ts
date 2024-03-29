@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 
-import { TrackOrderPageRoutingModule } from './track-order-routing.module';
-
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { TrackOrderPageRoutingModule } from './track-order-routing.module';
 import { TrackOrderPage } from './track-order.page';
 
 @NgModule({

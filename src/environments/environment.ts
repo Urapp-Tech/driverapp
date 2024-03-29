@@ -8,6 +8,7 @@ const domain = `localhost:3200`;
 export const environment = {
   production: false,
   baseUrl: `${protocol}://${domain}`,
+  tenant: '30f155f2-ded0-4fc2-897c-87dae511faf8',
 };
 
 /*

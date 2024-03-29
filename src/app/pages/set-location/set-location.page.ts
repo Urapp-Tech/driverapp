@@ -1,11 +1,5 @@
 // Import required modules
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  ViewChild,
-  inject,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { LocationService } from 'src/app/services/location.service';
 
 @Component({
@@ -14,12 +8,15 @@ import { LocationService } from 'src/app/services/location.service';
   styleUrls: ['./set-location.page.scss'],
 })
 export class SetLocationPage implements AfterViewInit {
-  private readonly locationService = inject(LocationService);
+  constructor(private readonly locationService: LocationService) {}
+
   // Get reference to HTML element for map
   @ViewChild('map')
   mapRef!: ElementRef<HTMLElement>;
+
   // Initialize variables for current location, new map, and car icon
   currentLocation: google.maps.LatLngLiteral = { lat: 0, lng: 0 };
+
   newMap!: any;
 
   // Get the current location using Capacitor's geolocation API
@@ -73,7 +70,7 @@ export class SetLocationPage implements AfterViewInit {
     const marker = new google.maps.Marker({
       position: latLng,
       map: this.newMap,
-      icon: icon,
+      icon,
     });
     console.log('Marker added:', marker);
     return marker;

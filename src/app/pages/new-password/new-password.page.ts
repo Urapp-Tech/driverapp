@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NavController } from '@ionic/angular';
 import { AuthenticationStoreService } from 'src/app/services/auth-store.service';
@@ -16,19 +16,23 @@ import { NewPasswordService } from './new-password.service';
   styleUrls: ['./new-password.page.scss'],
 })
 export class NewPasswordPage {
-  private readonly authenticationStoreService = inject(
-    AuthenticationStoreService
-  );
-  private readonly navController = inject(NavController);
-  private readonly newPasswordService = inject(NewPasswordService);
-  private readonly toastService = inject(ToastService);
+  constructor(
+    private readonly authenticationStoreService: AuthenticationStoreService,
+    private readonly navController: NavController,
+    private readonly newPasswordService: NewPasswordService,
+    private readonly toastService: ToastService
+  ) {}
+
   email: Nullable<string> = null;
+
   otp: Nullable<string> = null;
 
   newPassword: string = '';
+
   confirmPassword: string = '';
 
   newPasswordVisible: boolean = false;
+
   confirmPasswordVisible: boolean = false;
 
   toggleNewPasswordVisibility() {

@@ -15,21 +15,22 @@ import { DeliveryStatus } from 'src/app/types/tasks.types';
 })
 export class TaskCardComponent implements OnChanges {
   @Input() orderName: string = 'Temp Name';
+
   @Input() orderNumber!: number;
+
   @Input() orderStatus: DeliveryStatus = 'New';
+
   @Input() customerPhone!: string;
+
   @Input() pickupLocationMarker: google.maps.Marker | null = null;
+
   @Input() dropLocationMarker: google.maps.Marker | null = null;
+
   @Output() moveToLocation = new EventEmitter<google.maps.Marker>();
 
   pickupLocationAddress!: string;
-  dropLocationAddress!: string;
 
-  async getFormattedAddress(position: google.maps.LatLng) {
-    const geocoder = new google.maps.Geocoder();
-    const geocoderResponse = await geocoder.geocode({ location: position });
-    return geocoderResponse.results[0].formatted_address;
-  }
+  dropLocationAddress!: string;
 
   orderStatusText = {
     New: 'New Order',
@@ -48,6 +49,12 @@ export class TaskCardComponent implements OnChanges {
     Cancelled: '#FCA5A5',
     Accepted: '#93C5FD',
   };
+
+  async getFormattedAddress(position: google.maps.LatLng) {
+    const geocoder = new google.maps.Geocoder();
+    const geocoderResponse = await geocoder.geocode({ location: position });
+    return geocoderResponse.results[0].formatted_address;
+  }
 
   async ngOnChanges(changes: SimpleChanges) {
     const changedPickupLocationMarker =

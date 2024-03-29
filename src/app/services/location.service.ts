@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import { Injectable } from '@angular/core';
 import { Geolocation } from '@capacitor/geolocation';
 import { promiseHandler } from '../utilities/promise-handler';
@@ -13,7 +15,7 @@ export class LocationService {
       const getCurrentPositionPromise = Geolocation.getCurrentPosition(options);
       const [position, error] = await promiseHandler(getCurrentPositionPromise);
       if (!position) {
-        console.log('error :>> ', error);
+        console.error('error :>> ', error);
         return [0, 0];
       }
       return [position.coords.latitude, position.coords.longitude];
@@ -22,7 +24,7 @@ export class LocationService {
     if (hasRequestPermissions.coarseLocation === 'granted') {
       return this.getCurrentPosition();
     }
-    console.log('permission not granted');
+    console.error('permission not granted');
     return [0, 0];
   }
 }

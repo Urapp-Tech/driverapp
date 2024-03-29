@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NavController } from '@ionic/angular';
 import { SignInService } from 'src/app/pages/sign-in/sign-in.service';
@@ -11,18 +11,23 @@ import { SingInPayload, SingInResponse } from 'src/app/types/sign-in.types';
   styleUrls: ['./sign-in.page.scss'],
 })
 export class SignInPage {
-  private readonly signInService = inject(SignInService);
-  private readonly navController = inject(NavController);
-  private readonly userService = inject(UserService);
+  constructor(
+    private readonly signInService: SignInService,
+    private readonly navController: NavController,
+    private readonly userService: UserService
+  ) {}
+
   isVisible: boolean = false;
+
   onEyeClick() {
     this.isVisible = !this.isVisible;
   }
+
   onLogin(loginForm: NgForm) {
     if (loginForm.form.invalid) {
       return;
     }
-    const singInPayload: SingInPayload = {
+    const singInPayload: Omit<SingInPayload, 'tenant'> = {
       email: loginForm.form.controls['email'].value.toLowerCase(),
       password: loginForm.form.controls['password'].value,
     };

@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 
+import { SharedModule } from 'src/app/shared/shared.module';
 import { TaskLocationPageRoutingModule } from './task-location-routing.module';
 
-import { SharedModule } from 'src/app/shared/shared.module';
 import { TaskLocationPage } from './task-location.page';
 import { TaskLocationService } from './task-location.service';
 import { TaskCardComponent } from './components/task-card.component';

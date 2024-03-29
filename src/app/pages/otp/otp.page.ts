@@ -1,4 +1,4 @@
-import { Component, ViewChild, inject } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { NgOtpInputComponent } from 'ng-otp-input';
 import { AuthenticationStoreService } from 'src/app/services/auth-store.service';
@@ -10,14 +10,18 @@ import { Nullable } from 'src/app/types/common.types';
   styleUrls: ['./otp.page.scss'],
 })
 export class OtpPage {
-  private readonly navController = inject(NavController);
-  private readonly authenticationStoreService = inject(
-    AuthenticationStoreService
-  );
-  email: Nullable<string> = null;
-  otp: string = '';
+  constructor(
+    private readonly navController: NavController,
+    private readonly authenticationStoreService: AuthenticationStoreService
+  ) {}
+
   @ViewChild(NgOtpInputComponent, { static: true })
   ngOtpInput!: NgOtpInputComponent;
+
+  email: Nullable<string> = null;
+
+  otp: string = '';
+
   config = {
     length: 4,
     isPasswordInput: false,

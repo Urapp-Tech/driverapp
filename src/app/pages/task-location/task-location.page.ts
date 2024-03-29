@@ -1,16 +1,6 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  ViewChild,
-  inject,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import {
-  AlertController,
-  IonRouterOutlet,
-  NavController,
-} from '@ionic/angular';
+import { IonRouterOutlet, NavController } from '@ionic/angular';
 import { LocationService } from 'src/app/services/location.service';
 import {
   AssignedOrder,
@@ -33,27 +23,37 @@ import { TaskLocationService } from './task-location.service';
   styleUrls: ['./task-location.page.scss'],
 })
 export class TaskLocationPage implements AfterViewInit {
-  private readonly activatedRoute = inject(ActivatedRoute);
-  private readonly navController = inject(NavController);
-  // private readonly location = inject(Location);
-  private readonly locationService = inject(LocationService);
-  private readonly taskLocationService = inject(TaskLocationService);
-  private readonly ionRouterOutlet = inject(IonRouterOutlet);
-  private readonly alertController = inject(AlertController);
+  constructor(
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly navController: NavController,
+    private readonly locationService: LocationService,
+    private readonly taskLocationService: TaskLocationService,
+    private readonly ionRouterOutlet: IonRouterOutlet
+  ) {}
 
   @ViewChild('map', { static: true })
   mapRef!: ElementRef<HTMLDivElement>;
+
   currentLocation: google.maps.LatLngLiteral = { lat: 0, lng: 0 };
+
   selectedOption: string = '';
+
   newMap!: google.maps.Map;
+
   directionsService = new google.maps.DirectionsService();
+
   directionsDisplay = new google.maps.DirectionsRenderer();
+
   item!: AssignedOrder;
+
   orderDeliveryId!: string | null;
+
   buttonLabel: string = 'Start Driving';
 
   dropLocationMarker: google.maps.Marker | null = null;
+
   pickupLocationMarker: google.maps.Marker | null = null;
+
   startMarker: google.maps.Marker | null = null;
 
   myGoBack = ionGoBack({
@@ -84,13 +84,13 @@ export class TaskLocationPage implements AfterViewInit {
   }
 
   async addCurrentLocation() {
-    //this.addMarker(this.currentLocation, carIcon);
+    // this.addMarker(this.currentLocation, carIcon);
     if (this.startMarker) {
       this.startMarker.setPosition(this.currentLocation);
     }
 
-    //Code for adding marker onclick
-    /*google.maps.event.addListener(this.newMap, 'click', (event: any) => {
+    // Code for adding marker onclick
+    /* google.maps.event.addListener(this.newMap, 'click', (event: any) => {
       const latlng = event.latLng.toJSON();
       this.addMarker(latlng);
     }); */
@@ -121,7 +121,7 @@ export class TaskLocationPage implements AfterViewInit {
     const marker = new google.maps.Marker({
       position: coordinates,
       map: this.newMap,
-      icon: icon,
+      icon,
     });
     console.log('marker added:>> ', marker);
     return marker;
@@ -226,7 +226,6 @@ export class TaskLocationPage implements AfterViewInit {
     }
     if (this.item.status === DELIVERY_STATUS.DELIVERED) {
       this.myGoBack('/tasks');
-      return;
     }
   }
 
@@ -410,7 +409,6 @@ export class TaskLocationPage implements AfterViewInit {
         }
         if (this.item.status === DELIVERY_STATUS.DELIVERED) {
           this.handleStatusDelivered(response.data);
-          return;
         }
       }
     };
@@ -444,7 +442,6 @@ export class TaskLocationPage implements AfterViewInit {
         }
         if (this.item.status === DELIVERY_STATUS.DELIVERED) {
           this.handleStatusDelivered(response.data);
-          return;
         }
       }
     };

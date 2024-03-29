@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { API_PATHS } from 'src/environments/API-PATHS';
 import { GetAssignedOrdersResponse } from '../../types/tasks.types';
 
 @Injectable()
 export class TasksService {
-  private readonly httpClient = inject(HttpClient);
+  constructor(private readonly httpClient: HttpClient) {}
 
   getAssignedOrders() {
     return this.httpClient.get<GetAssignedOrdersResponse>(

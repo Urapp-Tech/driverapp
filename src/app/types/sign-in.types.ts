@@ -1,6 +1,7 @@
 export type SingInPayload = {
   email: string;
   password: string;
+  tenant: string;
 };
 
 export type SingInResponse = {

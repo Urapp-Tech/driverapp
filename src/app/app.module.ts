@@ -2,14 +2,13 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule, Provider } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-import { NgCircleProgressModule } from 'ng-circle-progress';
-import { IonicStorageModule } from '@ionic/storage-angular';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { IonicStorageModule } from '@ionic/storage-angular';
+import { NgCircleProgressModule } from 'ng-circle-progress';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthenticationInterceptor } from './interceptors/authentication.interceptor';
-import { APP_CONFIG_TOKEN_INJECTION } from './app-config.provider';
 
 const IONIC_ROUTING_STRATEGY_TOKEN_INJECTION: Provider = {
   provide: RouteReuseStrategy,
@@ -43,7 +42,6 @@ const AUTHENTICATION_INTERCEPTOR_TOKEN_INJECTION: Provider = {
   providers: [
     IONIC_ROUTING_STRATEGY_TOKEN_INJECTION,
     AUTHENTICATION_INTERCEPTOR_TOKEN_INJECTION,
-    APP_CONFIG_TOKEN_INJECTION,
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

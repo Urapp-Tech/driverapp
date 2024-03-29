@@ -16,6 +16,7 @@ export class TrackOrderPage {
       info: 'Your order is in progress',
     },
   ];
+
   orderTypes = [
     {
       type: 'Order Placed',
@@ -104,14 +105,16 @@ export class TrackOrderPage {
 
     // Add corresponding icon and color properties to each order
   }
+
   mergeInfo(data: any) {
     data.forEach((order: any) => {
       const matchingType: any = this.orderTypes.find(
         (type) => type.type === order.type
       );
-      for (const prop in matchingType) {
-        order[prop] = matchingType[prop];
-      }
+      Object.keys(matchingType).forEach((key) => {
+        // eslint-disable-next-line no-param-reassign
+        order[key] = matchingType[key];
+      });
     });
   }
 }

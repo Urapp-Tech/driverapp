@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   GetAssignedOrderDetailsResponse,
   SetOrderStatusPayload,
@@ -9,7 +9,7 @@ import { API_PATHS } from 'src/environments/API-PATHS';
 
 @Injectable()
 export class TaskLocationService {
-  private readonly httpClient = inject(HttpClient);
+  constructor(private readonly httpClient: HttpClient) {}
 
   getAssignedOrderDetails(orderId: string) {
     return this.httpClient.get<GetAssignedOrderDetailsResponse>(

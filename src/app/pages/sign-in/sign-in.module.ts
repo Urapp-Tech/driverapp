@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 
+import { SharedModule } from 'src/app/shared/shared.module';
 import { SignInPageRoutingModule } from './sign-in-routing.module';
 
-import { SharedModule } from 'src/app/shared/shared.module';
 import { SignInPage } from './sign-in.page';
 import { SignInService } from './sign-in.service';
 

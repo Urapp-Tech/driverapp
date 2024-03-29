@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavigationExtras } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import {
@@ -14,8 +14,10 @@ import { TasksService } from './tasks.service';
   styleUrls: ['./tasks.page.scss'],
 })
 export class TasksPage {
-  private readonly navController = inject(NavController);
-  private readonly tasksService = inject(TasksService);
+  constructor(
+    private readonly navController: NavController,
+    private readonly tasksService: TasksService
+  ) {}
 
   trackById = trackById;
 
@@ -51,11 +53,13 @@ export class TasksPage {
       const matchingType: any = this.assignedOrders.find(
         (type: any) => type.type === order.status
       );
-      for (const prop in matchingType) {
-        order[prop] = matchingType[prop];
-      }
+      Object.keys(matchingType).forEach((key) => {
+        // eslint-disable-next-line no-param-reassign
+        order[key] = matchingType[key];
+      });
     });
   }
+
   navigateToNextPage(item: AssignedOrder) {
     const navigationExtras: NavigationExtras = {
       replaceUrl: false,

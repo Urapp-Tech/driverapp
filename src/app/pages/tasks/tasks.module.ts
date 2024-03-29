@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 
+import { NgCircleProgressModule } from 'ng-circle-progress';
 import { TasksPageRoutingModule } from './tasks-routing.module';
 
-import { NgCircleProgressModule } from 'ng-circle-progress';
 import { SharedModule } from '../../shared/shared.module';
 import { TasksPage } from './tasks.page';
 import { TasksService } from './tasks.service';

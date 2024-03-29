@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 
 import { NgOtpInputModule } from 'ng-otp-input';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { OtpPageRoutingModule } from './otp-routing.module';
 
-import { SharedModule } from 'src/app/shared/shared.module';
 import { OtpPage } from './otp.page';
 
 @NgModule({
