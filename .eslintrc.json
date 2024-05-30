@@ -6,7 +6,11 @@
       "files": ["*.ts"],
       "parserOptions": {
         "project": ["tsconfig.json"],
-        "createDefaultProgram": true
+        "createDefaultProgram": true,
+        "ecmaVersion": "latest"
+      },
+      "env": {
+        "es6": true
       },
       "plugins": ["unused-imports", "simple-import-sort"],
       "extends": [
@@ -161,7 +165,7 @@
         "@angular-eslint/component-class-suffix": [
           "error",
           {
-            "suffixes": ["Page", "Component"]
+            "suffixes": ["Page", "Component", "Modal"]
           }
         ],
         "@angular-eslint/component-selector": [
@@ -179,7 +183,9 @@
             "prefix": "app",
             "style": "camelCase"
           }
-        ]
+        ],
+        "@typescript-eslint/adjacent-overload-signatures": "off",
+        "grouped-accessor-pairs": "off"
       }
     },
     {

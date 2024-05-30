@@ -1,12 +1,12 @@
-<ion-header class="big-header" style="height: 0px">
+<ion-header class="big-header h-0">
   <ion-toolbar color="none">
     <ion-buttons slot="start">
-      <ion-button (click)="myGoBack('/tasks')" fill="clear" class="back-button">
-        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      <ion-button class="back-button" fill="clear" (click)="myGoBack('/tasks')">
+        <ion-icon name="arrow-back" slot="icon-only"> </ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button *ngIf="item" href="tel:{item.phone}">
+      <ion-button href="tel:{item.phone}" *ngIf="item">
         <ion-icon name="call-outline" color="primary"> </ion-icon>
       </ion-button>
     </ion-buttons>
@@ -22,13 +22,14 @@
       [pickupLocationMarker]="pickupLocationMarker"
       [dropLocationMarker]="dropLocationMarker"
       (moveToLocation)="moveToLocation($event)"
-    ></app-task-card>
+    >
+    </app-task-card>
   </ng-container>
 
   <div class="map" #map></div>
 
   <div class="lower-part">
-    <ion-button expand="block" class="btn-full" (click)="buttonAction()">
+    <ion-button class="btn-full" expand="block" (click)="buttonAction()">
       {{ buttonLabel }}
     </ion-button>
   </div>

@@ -1,17 +1,17 @@
 .otp-input {
   border: 2px lightgrey solid;
+  border-radius: 8px;
   width: 50px;
   height: 50px;
-  border-radius: 8px;
-  text-align: center;
-  font-size: 26px;
   font-weight: 600;
+  font-size: 26px;
+  text-align: center;
   --padding-start: 0;
 }
 
 .otp-row {
-  width: 240px;
   margin: auto;
+  width: 240px;
 }
 
 .color-bg-primary-black {

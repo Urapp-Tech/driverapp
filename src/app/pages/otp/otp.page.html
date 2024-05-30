@@ -6,16 +6,17 @@
 
 <ion-content>
   <div class="ion-text-center">
-    <h1 style="margin: 30px !important">OTP Verification</h1>
-    <p style="margin: 30px !important">
-      An 4 digit code has been sent to<br />{{ email }}
+    <h1 class="!mt-8">OTP Verification</h1>
+    <p class="!mt-8">
+      An 4 digit code has been sent to<br />
+      {{ email }}
     </p>
     <ion-row>
       <ion-col>
         <ng-otp-input
           #ngOtpInput
-          (onInputChange)="onOtpChange($event)"
           [config]="config"
+          (onInputChange)="onOtpChange($event)"
         >
         </ng-otp-input>
       </ion-col>
@@ -23,9 +24,9 @@
     <ion-row>
       <ion-col class="ion-padding-horizontal">
         <button
-          [disabled]="otp.length !== 4"
           class="btn-full color-bg-primary-black"
           type="button"
+          [disabled]="otp.length !== 4"
           (click)="onSubmit()"
         >
           Submit

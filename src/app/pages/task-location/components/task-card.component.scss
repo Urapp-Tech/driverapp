@@ -1,26 +1,26 @@
 :host {
   .item {
     position: absolute;
-    margin-inline: 1rem;
-    padding: 1rem;
-    margin-block: auto;
-    z-index: 1;
-    background: white;
-    left: 0;
-    right: 0;
     top: 3.75rem;
-    border-radius: 0.75rem;
+    right: 0;
+    left: 0;
+    z-index: 1;
+    margin-inline: 1rem;
+    margin-block: auto;
+    box-shadow: 0.125rem 0.125rem 1.25rem 0rem rgba(0, 0, 0, 0.1);
     border-width: 0.125rem;
     border-style: solid;
     border-color: white;
+    border-radius: 0.75rem;
+    background: white;
     background: rgba(255, 255, 255, 0.98);
-    box-shadow: 0.125rem 0.125rem 1.25rem 0rem rgba(0, 0, 0, 0.1);
+    padding: 1rem;
     .item-name {
       color: #1a1a1a;
-      font-family: Open Sans;
-      font-size: 1.25rem;
       font-style: normal;
       font-weight: 600;
+      font-size: 1.25rem;
+      font-family: Open Sans;
     }
     .item-badge {
       position: absolute;
@@ -30,14 +30,14 @@
       border-radius: 0.625rem;
       background-color: transparent;
 
-      color: #1d1d1d;
-      font-family: Open Sans;
-      font-size: 0.75rem;
-      font-style: normal;
-      font-weight: 600;
-
       padding-inline: 0.625rem;
       padding-block: 0.25rem;
+
+      color: #1d1d1d;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 0.75rem;
+      font-family: Open Sans;
     }
     .item-details {
       display: flex;
@@ -45,11 +45,11 @@
       margin-block: 0.5rem;
       .item-number {
         color: #6a6a6a;
-        font-family: Open Sans;
-        font-size: 0.875rem;
         font-style: normal;
         font-weight: 400;
+        font-size: 0.875rem;
         line-height: normal;
+        font-family: Open Sans;
       }
       .customer-phone {
         display: flex;
@@ -57,16 +57,16 @@
         margin-bottom: 0.125rem;
 
         .icon {
-          font-size: 0.75rem;
           margin-right: 0.125rem;
+          font-size: 0.75rem;
         }
         .text {
           color: #357bf3;
-          font-family: Open Sans;
-          font-size: 0.875rem;
           font-style: normal;
           font-weight: 600;
+          font-size: 0.875rem;
           line-height: normal;
+          font-family: Open Sans;
           text-decoration-line: underline;
           text-underline-offset: 0.125rem;
         }
@@ -76,28 +76,28 @@
     .address {
       display: flex;
       position: relative;
-      color: #6a6a6a;
-      font-size: 0.75rem;
-      font-style: normal;
-      font-weight: 400;
-      line-height: normal;
-      font-family: Open Sans;
       margin-bottom: 0.5rem;
       border-radius: 0.625rem;
       background: #f2f4f3;
       padding: 0.5rem;
       padding-top: 1rem;
+      color: #6a6a6a;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 0.75rem;
+      line-height: normal;
+      font-family: Open Sans;
       .address-icon {
         position: absolute;
-        font-size: 1.25rem;
         top: 0.25rem;
         left: 0.25rem;
+        font-size: 1.25rem;
       }
       .address-text {
-        text-align: left;
+        padding-right: 0rem;
 
         padding-left: 1.5rem;
-        padding-right: 0rem;
+        text-align: left;
       }
     }
   }

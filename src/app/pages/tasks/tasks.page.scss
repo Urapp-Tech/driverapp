@@ -14,19 +14,19 @@
 }
 
 .quantity-number {
-  font-weight: bold;
   flex-direction: column;
+  font-weight: bold;
 }
 
 .circle-col {
+  position: relative;
   min-width: 70px;
   max-width: 70px;
   font-size: 24px;
-  position: relative;
 }
 .details-col {
-  flex-direction: column;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   ion-col {
     padding: 1px;
@@ -38,9 +38,9 @@
 
 .icons {
   position: absolute;
-  left: 0;
+  top: 0;
   right: 0;
   bottom: 0;
-  top: 0;
+  left: 0;
   margin: auto;
 }

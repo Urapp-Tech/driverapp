@@ -9,6 +9,7 @@
     "haptics",
     "ionicons",
     "localforage",
-    "styleext"
+    "styleext",
+    "tailwindcss"
   ]
 }

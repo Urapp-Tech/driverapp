@@ -16,19 +16,19 @@ ion-content {
   color: var(--ion-color-primary);
   --border-radius: 8px;
   --background: lightgray;
-  text-transform: none;
-  font-size: 12px;
   margin: 0;
   width: 100%;
+  font-size: 12px;
+  text-transform: none;
   ion-icon {
     margin-right: 8px;
   }
 }
 .lower-part {
   position: fixed;
-  width: 100%;
   bottom: -0;
   padding: 15px 15px 15px 10px;
+  width: 100%;
   ion-label {
     color: grey;
   }
@@ -38,19 +38,19 @@ ion-content {
 }
 .item {
   position: absolute;
-  width: 95%;
-  z-index: 1;
-  background: white;
-  border-radius: 12px;
-  left: 0;
-  right: 0;
-  margin: auto;
   top: 70px;
+  right: 0;
+  left: 0;
+  z-index: 1;
+  margin: auto;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* Add this line for a shadow */
+  border-radius: 12px;
+  background: white;
+  width: 95%;
 }
 
 .quantity-number {
-  font-weight: bold;
   flex-direction: column;
   justify-content: right;
+  font-weight: bold;
 }

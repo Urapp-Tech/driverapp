@@ -2,44 +2,44 @@
   font-family: 'Open Sans';
 }
 .login-head {
-  font-style: normal;
-  font-weight: 600;
-  font-size: 29px;
-  line-height: 41px;
   margin-top: 30px;
-  text-align: center;
   /* identical to box height */
 
   /* Primary */
 
   color: #1d1d1d;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 29px;
+  line-height: 41px;
+  text-align: center;
 }
 .subhead {
+  margin-bottom: 20px;
+
+  color: #6a6a6a;
   /* Place Holder */
 
   font-style: normal;
   font-weight: 400;
   font-size: 15px;
   line-height: 17px;
-  margin-bottom: 20px;
   /* identical to box height */
 
   text-align: center;
-
-  color: #6a6a6a;
 }
 .forgot {
   display: block;
+  padding: 20px;
+  /* identical to box height */
+
+  color: #000000;
   font-style: normal;
   font-weight: 400;
   font-size: 13px;
   line-height: 19px;
-  padding: 20px;
   text-align: center;
   text-decoration: none;
-  /* identical to box height */
-
-  color: #000000;
 }
 
 .color-bg-primary-black {
@@ -52,9 +52,9 @@
 
 .align-center-middle {
   position: absolute;
-  left: 0;
+  top: 0;
   right: 0;
   bottom: 0;
-  top: 0;
+  left: 0;
   margin: auto;
 }

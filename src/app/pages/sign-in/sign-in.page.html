@@ -1,7 +1,13 @@
 <!-- <ion-header>
   <ion-toolbar>
-    <ion-title>signIn</ion-title>
-  </ion-toolbar>
+    <ion-title>signIn
+
+</ion-title>
+
+
+</ion-toolbar>
+
+
 </ion-header> -->
 <ion-header class="big-header">
   <div class="bg-container">
@@ -16,39 +22,43 @@
     <div class="ion-padding-horizontal">
       <ion-item>
         <ion-input
-          name="email"
           id="email"
+          name="email"
           type="email"
           ngModel
-          [clearInput]="true"
           placeholder="User ID/Email"
           email
           errorText="Invalid Email"
+          [clearInput]="true"
         >
         </ion-input>
       </ion-item>
       <ion-item>
-        <!-- <ion-label position="stacked">Input with clear button </ion-label> -->
+        <!-- <ion-label position="stacked">Input with clear button
+
+</ion-label> -->
         <ion-input
-          [type]="isVisible ? 'text' : 'password'"
-          placeholder="Password"
-          name="password"
           id="password"
+          name="password"
+          placeholder="Password"
           ngModel
           minlength="3"
           maxlength="30"
           errorText="Invalid Password"
+          [type]="isVisible ? 'text' : 'password'"
         >
         </ion-input>
         <ion-icon
-          [name]="isVisible ? 'eye-off' : 'eye'"
           item-right
+          [name]="isVisible ? 'eye-off' : 'eye'"
           (click)="onEyeClick()"
         >
         </ion-icon>
       </ion-item>
     </div>
-    <!-- </ion-list> -->
+    <!--
+
+</ion-list> -->
 
     <a class="forgot" [routerLink]="['/forgot-password']"> Forgot Password </a>
 

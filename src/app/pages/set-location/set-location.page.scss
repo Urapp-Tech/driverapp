@@ -11,19 +11,19 @@ ion-content {
   color: var(--ion-color-primary);
   --border-radius: 8px;
   --background: lightgray;
-  text-transform: none;
-  font-size: 12px;
   margin: 0;
   width: 100%;
+  font-size: 12px;
+  text-transform: none;
   ion-icon {
     margin-right: 8px;
   }
 }
 .lower-part {
   position: fixed;
-  width: 100%;
   bottom: -0;
   padding: 15px 15px 15px 10px;
+  width: 100%;
   ion-label {
     color: grey;
   }
