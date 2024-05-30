@@ -3,7 +3,7 @@ import { NgForm } from '@angular/forms';
 import { NavController } from '@ionic/angular';
 import { SignInService } from 'src/app/pages/sign-in/sign-in.service';
 import { UserService } from 'src/app/services/user.service';
-import { SingInPayload, SingInResponse } from 'src/app/types/sign-in.types';
+import { SignInPayload, SignInResponse } from 'src/app/types/sign-in.types';
 
 @Component({
   selector: 'app-sign-in',
@@ -27,11 +27,11 @@ export class SignInPage {
     if (loginForm.form.invalid) {
       return;
     }
-    const singInPayload: Omit<SingInPayload, 'tenant'> = {
+    const signInPayload: Omit<SignInPayload, 'tenant'> = {
       email: loginForm.form.controls['email'].value.toLowerCase(),
       password: loginForm.form.controls['password'].value,
     };
-    const handleLoginResponse = (response: SingInResponse) => {
+    const handleLoginResponse = (response: SignInResponse) => {
       if (response.code === 200) {
         this.userService.setUser(response.data);
         this.navController.navigateRoot('/set-location');
@@ -43,7 +43,7 @@ export class SignInPage {
         error
       );
     };
-    this.signInService.signIn(singInPayload).subscribe({
+    this.signInService.signIn(signInPayload).subscribe({
       next: handleLoginResponse,
       error: handleLoginError,
     });

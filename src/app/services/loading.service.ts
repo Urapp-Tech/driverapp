@@ -29,6 +29,14 @@ export class LoadingService {
     }
   }
 
+  async clear() {
+    this.loadingCount = 0;
+    await this.dismiss();
+    setTimeout(async () => {
+      await this.dismiss();
+    }, 0);
+  }
+
   private async dismiss() {
     const ionLoadingElement = await this.loadingController.getTop();
     if (ionLoadingElement) await this.loadingController.dismiss();

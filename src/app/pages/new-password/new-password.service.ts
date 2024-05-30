@@ -17,7 +17,7 @@ export class NewPasswordService {
       tenant: environment.tenant,
     };
     return this.httpClient.post<NewPasswordResponse>(
-      API_PATHS.resetPassword,
+      API_PATHS.resetPassword(),
       forgotPasswordPayload
     );
   }

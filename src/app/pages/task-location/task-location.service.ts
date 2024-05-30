@@ -19,7 +19,7 @@ export class TaskLocationService {
 
   setOrderStatus(payload: SetOrderStatusPayload) {
     return this.httpClient.post<SetOrderStatusResponse>(
-      API_PATHS.setOrderStatus,
+      API_PATHS.setOrderStatus(),
       payload
     );
   }

@@ -9,7 +9,7 @@ export class TasksService {
 
   getAssignedOrders() {
     return this.httpClient.get<GetAssignedOrdersResponse>(
-      API_PATHS.getAssignedOrders
+      API_PATHS.getAssignedOrders()
     );
   }
 }

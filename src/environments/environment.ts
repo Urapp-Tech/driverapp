@@ -2,12 +2,15 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-const protocol = `http`;
-const domain = `localhost:3200`;
+const PROTOCOL = 'https';
+const DOMAIN = 'dev.urapptech.com';
+const PORT = '';
+
+const TransformedPort = PORT ? `:${PORT}` : '';
 
 export const environment = {
   production: false,
-  baseUrl: `${protocol}://${domain}`,
+  baseURL: `${PROTOCOL}://${DOMAIN}${TransformedPort}`,
   tenant: '30f155f2-ded0-4fc2-897c-87dae511faf8',
 };
 

@@ -1,17 +1,17 @@
-export type SingInPayload = {
+export type SignInPayload = {
   email: string;
   password: string;
   tenant: string;
 };
 
-export type SingInResponse = {
+export type SignInResponse = {
   success: boolean;
   code: number;
   message: string;
-  data: SingInData;
+  data: SignInData;
 };
 
-export type SingInData = {
+export type SignInData = {
   id: string;
   email: string;
   isActive: boolean;

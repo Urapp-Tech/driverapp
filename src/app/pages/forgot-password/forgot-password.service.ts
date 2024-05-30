@@ -17,7 +17,7 @@ export class ForgotPasswordService {
       tenant: environment.tenant,
     };
     return this.httpClient.post<ForgotPasswordResponse>(
-      API_PATHS.forgotPassword,
+      API_PATHS.forgotPassword(),
       forgotPasswordPayload
     );
   }
