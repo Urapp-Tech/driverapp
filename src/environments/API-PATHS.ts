@@ -48,4 +48,12 @@ export const API_PATHS = {
     );
     return url.toString();
   },
+
+  getSystemConfig(tenantId: string) {
+    const url = new URL(
+      `/api/v1/system/config/get/${tenantId}`,
+      environment.baseURL
+    );
+    return url.toString();
+  },
 };

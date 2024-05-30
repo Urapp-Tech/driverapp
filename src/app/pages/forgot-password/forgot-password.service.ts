@@ -14,7 +14,7 @@ export class ForgotPasswordService {
   forgotPassword(email: string) {
     const forgotPasswordPayload: ForgotPasswordPayload = {
       email,
-      tenant: environment.tenant,
+      tenant: environment.tenantId,
     };
     return this.httpClient.post<ForgotPasswordResponse>(
       API_PATHS.forgotPassword(),

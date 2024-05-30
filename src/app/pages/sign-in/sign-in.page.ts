@@ -17,11 +17,7 @@ export class SignInPage {
     private readonly userService: UserService
   ) {}
 
-  isVisible: boolean = false;
-
-  onEyeClick() {
-    this.isVisible = !this.isVisible;
-  }
+  isPasswordVisible = false;
 
   onLogin(loginForm: NgForm) {
     if (loginForm.form.invalid) {

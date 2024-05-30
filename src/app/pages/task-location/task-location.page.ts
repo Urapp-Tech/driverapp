@@ -2,18 +2,17 @@ import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonRouterOutlet, NavController } from '@ionic/angular';
 import { LocationService } from 'src/app/services/location.service';
+import { StorageService } from 'src/app/services/storage.service';
+import { SystemConfigData } from 'src/app/types/app.types';
 import {
   AssignedOrder,
   AssignedOrderDetails,
-  DeliveryStatus,
   GetAssignedOrderDetailsResponse,
+  OrderStatus,
   SetOrderStatusPayload,
   SetOrderStatusResponse,
 } from 'src/app/types/tasks.types';
-import {
-  DELIVERY_STATUS,
-  TEMP_PICKUP_ADDRESS,
-} from 'src/app/utilities/constants';
+import { ORDER_STATUS } from 'src/app/utilities/constants';
 import { ionGoBack } from 'src/app/utilities/ionic-go-back-function';
 import { TaskLocationService } from './task-location.service';
 
@@ -28,7 +27,8 @@ export class TaskLocationPage implements AfterViewInit {
     private readonly navController: NavController,
     private readonly locationService: LocationService,
     private readonly taskLocationService: TaskLocationService,
-    private readonly ionRouterOutlet: IonRouterOutlet
+    private readonly ionRouterOutlet: IonRouterOutlet,
+    private readonly storageService: StorageService
   ) {}
 
   @ViewChild('map', { static: true })
@@ -178,68 +178,135 @@ export class TaskLocationPage implements AfterViewInit {
     );
   }
 
-  acceptDelivery() {
+  acceptToPickUpItemFromCustomer() {
     if (!this.orderDeliveryId) {
       return;
     }
     const payload: SetOrderStatusPayload = {
       appOrderDelivery: this.orderDeliveryId,
-      status: DELIVERY_STATUS.ACCEPTED,
+      status: ORDER_STATUS.DRIVER_ACCEPTED_TO_PICK_UP_ITEM_FROM_CUSTOMER,
     };
     this.setOrderStatus(payload);
   }
 
-  pickupItem() {
+  pickUpItemFromCustomer() {
     if (!this.orderDeliveryId) {
       return;
     }
     const payload: SetOrderStatusPayload = {
       appOrderDelivery: this.orderDeliveryId,
-      status: DELIVERY_STATUS.IN_DELIVERY,
+      status: ORDER_STATUS.DRIVER_PICKED_UP_ITEM_FROM_CUSTOMER,
     };
     this.setOrderStatus(payload);
   }
 
-  deliverItem() {
+  deliveredItemToShop() {
     if (!this.orderDeliveryId) {
       return;
     }
     const payload: SetOrderStatusPayload = {
       appOrderDelivery: this.orderDeliveryId,
-      status: DELIVERY_STATUS.DELIVERED,
+      status: ORDER_STATUS.DRIVER_DELIVERED_ITEM_TO_SHOP,
+    };
+    this.setOrderStatus(payload);
+  }
+
+  acceptToPickUpItemFromShop() {
+    if (!this.orderDeliveryId) {
+      return;
+    }
+    const payload: SetOrderStatusPayload = {
+      appOrderDelivery: this.orderDeliveryId,
+      status: ORDER_STATUS.DRIVER_ACCEPTED_TO_PICK_UP_ITEM_FROM_SHOP,
+    };
+    this.setOrderStatus(payload);
+  }
+
+  pickUpItemFromShop() {
+    if (!this.orderDeliveryId) {
+      return;
+    }
+    const payload: SetOrderStatusPayload = {
+      appOrderDelivery: this.orderDeliveryId,
+      status: ORDER_STATUS.DRIVER_ACCEPTED_TO_PICK_UP_ITEM_FROM_SHOP,
+    };
+    this.setOrderStatus(payload);
+  }
+
+  deliveredItemToCustomer() {
+    if (!this.orderDeliveryId) {
+      return;
+    }
+    const payload: SetOrderStatusPayload = {
+      appOrderDelivery: this.orderDeliveryId,
+      status: ORDER_STATUS.DRIVER_DELIVERED_ITEM_TO_CUSTOMER,
     };
     this.setOrderStatus(payload);
   }
 
   buttonAction() {
-    if (this.item.status === DELIVERY_STATUS.NEW) {
-      this.acceptDelivery();
+    if (this.item.status === ORDER_STATUS.DRIVER_ASSIGNED_FOR_ITEM_PICKUP) {
+      this.acceptToPickUpItemFromCustomer();
       return;
     }
-    if (this.item.status === DELIVERY_STATUS.ACCEPTED) {
-      this.pickupItem();
+    if (
+      this.item.status ===
+      ORDER_STATUS.DRIVER_ACCEPTED_TO_PICK_UP_ITEM_FROM_CUSTOMER
+    ) {
+      this.pickUpItemFromCustomer();
       return;
     }
-    if (this.item.status === DELIVERY_STATUS.IN_DELIVERY) {
-      this.deliverItem();
+    if (this.item.status === ORDER_STATUS.DRIVER_PICKED_UP_ITEM_FROM_CUSTOMER) {
+      this.deliveredItemToShop();
       return;
     }
-    if (this.item.status === DELIVERY_STATUS.DELIVERED) {
+    if (this.item.status === ORDER_STATUS.DRIVER_DELIVERED_ITEM_TO_SHOP) {
+      this.myGoBack('/tasks');
+      return;
+    }
+    if (this.item.status === ORDER_STATUS.DRIVER_ASSIGNED_FOR_ITEM_DELIVERY) {
+      this.acceptToPickUpItemFromShop();
+      return;
+    }
+    if (
+      this.item.status ===
+      ORDER_STATUS.DRIVER_ACCEPTED_TO_PICK_UP_ITEM_FROM_SHOP
+    ) {
+      this.pickUpItemFromShop();
+      return;
+    }
+    if (this.item.status === ORDER_STATUS.DRIVER_PICKED_UP_ITEM_FROM_SHOP) {
+      this.deliveredItemToCustomer();
+      return;
+    }
+    if (this.item.status === ORDER_STATUS.DRIVER_DELIVERED_ITEM_TO_CUSTOMER) {
       this.myGoBack('/tasks');
     }
   }
 
-  getButtonLabel(status: DeliveryStatus) {
-    if (status === DELIVERY_STATUS.NEW) {
+  getButtonLabel(status: OrderStatus) {
+    if (status === ORDER_STATUS.DRIVER_ASSIGNED_FOR_ITEM_PICKUP) {
       return 'Accept';
     }
-    if (status === DELIVERY_STATUS.ACCEPTED) {
+    if (status === ORDER_STATUS.DRIVER_ACCEPTED_TO_PICK_UP_ITEM_FROM_CUSTOMER) {
       return 'Pick Up';
     }
-    if (status === DELIVERY_STATUS.IN_DELIVERY) {
+    if (status === ORDER_STATUS.DRIVER_PICKED_UP_ITEM_FROM_CUSTOMER) {
       return 'Delivered';
     }
-    if (status === DELIVERY_STATUS.DELIVERED) {
+    if (status === ORDER_STATUS.DRIVER_DELIVERED_ITEM_TO_SHOP) {
+      return 'Back';
+    }
+    if (status === ORDER_STATUS.DRIVER_ASSIGNED_FOR_ITEM_DELIVERY) {
+      return 'Accept';
+    }
+    if (status === ORDER_STATUS.DRIVER_ACCEPTED_TO_PICK_UP_ITEM_FROM_SHOP) {
+      return 'Pick Up';
+    }
+    if (status === ORDER_STATUS.DRIVER_PICKED_UP_ITEM_FROM_SHOP) {
+      return 'Delivered';
+    }
+    if (status === ORDER_STATUS.DRIVER_DELIVERED_ITEM_TO_CUSTOMER) {
       return 'Back';
     }
     return 'Start Driving';
@@ -276,13 +343,147 @@ export class TaskLocationPage implements AfterViewInit {
     }
   }
 
-  async handleStatusNew(data: AssignedOrderDetails) {
+  // HAPPY CASE 1
+  async handleStatusAssignedForItemPickup(data: AssignedOrderDetails) {
+    const systemConfigData =
+      await this.storageService.get<SystemConfigData>('SYSTEM_CONFIG_DATA');
+    if (!systemConfigData) {
+      return;
+    }
+
     if (this.pickupLocationMarker) {
       this.pickupLocationMarker.setMap(null);
       this.pickupLocationMarker = null;
     }
-    const pickupLocation =
-      await this.getLocationFromAddress(TEMP_PICKUP_ADDRESS);
+    const pickupLocation = await this.getLocationFromAddress(
+      data.order.appUserAddress.address
+    );
+    const homeIcon = {
+      url: 'assets/img/home-pin-icon.png',
+      scaledSize: new google.maps.Size(32, 44),
+    };
+    this.pickupLocationMarker = this.addMarker(pickupLocation, homeIcon);
+    this.pickupLocationMarker.setMap(this.newMap);
+
+    if (this.dropLocationMarker) {
+      this.dropLocationMarker.setMap(null);
+      this.dropLocationMarker = null;
+    }
+    const dropLocation = await this.getLocationFromAddress(
+      systemConfigData.tenantConfig.shopAddress
+    );
+    const shopIcon = {
+      url: 'assets/img/shop-pin-icon.png',
+      scaledSize: new google.maps.Size(32, 44),
+    };
+    this.dropLocationMarker = this.addMarker(dropLocation, shopIcon);
+    this.dropLocationMarker.setMap(this.newMap);
+  }
+
+  // HAPPY CASE 2
+  async handleStatusAcceptedToPickUpItemFromCustomer(
+    data: AssignedOrderDetails
+  ) {
+    if (this.dropLocationMarker) {
+      this.dropLocationMarker.setMap(null);
+      this.dropLocationMarker = null;
+    }
+
+    if (this.pickupLocationMarker) {
+      this.pickupLocationMarker.setMap(null);
+      this.pickupLocationMarker = null;
+    }
+    const pickupLocation = await this.getLocationFromAddress(
+      data.order.appUserAddress.address
+    );
+    const homeIcon = {
+      url: 'assets/img/home-pin-icon.png',
+      scaledSize: new google.maps.Size(32, 44),
+    };
+    this.pickupLocationMarker = this.addMarker(pickupLocation, homeIcon);
+    this.pickupLocationMarker.setMap(this.newMap);
+  }
+
+  // HAPPY CASE 3
+  async handleStatusPickedUpItemFromCustomer() {
+    const systemConfigData =
+      await this.storageService.get<SystemConfigData>('SYSTEM_CONFIG_DATA');
+    if (!systemConfigData) {
+      return;
+    }
+
+    if (this.pickupLocationMarker) {
+      this.pickupLocationMarker.setMap(null);
+      this.pickupLocationMarker = null;
+    }
+
+    if (this.dropLocationMarker) {
+      this.dropLocationMarker.setMap(null);
+      this.dropLocationMarker = null;
+    }
+    const dropLocation = await this.getLocationFromAddress(
+      systemConfigData.tenantConfig.shopAddress
+    );
+    const shopIcon = {
+      url: 'assets/img/shop-pin-icon.png',
+      scaledSize: new google.maps.Size(32, 44),
+    };
+    this.dropLocationMarker = this.addMarker(dropLocation, shopIcon);
+    this.dropLocationMarker.setMap(this.newMap);
+  }
+
+  // HAPPY CASE 4
+  async handleStatusDeliveredItemToShop(data: AssignedOrderDetails) {
+    const systemConfigData =
+      await this.storageService.get<SystemConfigData>('SYSTEM_CONFIG_DATA');
+    if (!systemConfigData) {
+      return;
+    }
+
+    if (this.pickupLocationMarker) {
+      this.pickupLocationMarker.setMap(null);
+      this.pickupLocationMarker = null;
+    }
+    const pickupLocation = await this.getLocationFromAddress(
+      data.order.appUserAddress.address
+    );
+    const homeIcon = {
+      url: 'assets/img/home-pin-icon.png',
+      scaledSize: new google.maps.Size(32, 44),
+    };
+    this.pickupLocationMarker = this.addMarker(pickupLocation, homeIcon);
+    this.pickupLocationMarker.setMap(this.newMap);
+
+    if (this.dropLocationMarker) {
+      this.dropLocationMarker.setMap(null);
+      this.dropLocationMarker = null;
+    }
+    const dropLocation = await this.getLocationFromAddress(
+      systemConfigData.tenantConfig.shopAddress
+    );
+    const shopIcon = {
+      url: 'assets/img/shop-pin-icon.png',
+      scaledSize: new google.maps.Size(32, 44),
+    };
+    this.dropLocationMarker = this.addMarker(dropLocation, shopIcon);
+    this.dropLocationMarker.setMap(this.newMap);
+  }
+
+  // HAPPY CASE 5
+  async handleStatusAssignedForItemDelivery(data: AssignedOrderDetails) {
+    const systemConfigData =
+      await this.storageService.get<SystemConfigData>('SYSTEM_CONFIG_DATA');
+    if (!systemConfigData) {
+      return;
+    }
+
+    if (this.pickupLocationMarker) {
+      this.pickupLocationMarker.setMap(null);
+      this.pickupLocationMarker = null;
+    }
+    const pickupLocation = await this.getLocationFromAddress(
+      systemConfigData.tenantConfig.shopAddress
+    );
     const shopIcon = {
       url: 'assets/img/shop-pin-icon.png',
       scaledSize: new google.maps.Size(32, 44),
@@ -305,13 +506,71 @@ export class TaskLocationPage implements AfterViewInit {
     this.dropLocationMarker.setMap(this.newMap);
   }
 
-  async handleStatusDelivered(data: AssignedOrderDetails) {
+  // HAPPY CASE 6
+  async handleStatusAcceptedToPickUpItemFromShop() {
+    const systemConfigData =
+      await this.storageService.get<SystemConfigData>('SYSTEM_CONFIG_DATA');
+    if (!systemConfigData) {
+      return;
+    }
+
+    if (this.dropLocationMarker) {
+      this.dropLocationMarker.setMap(null);
+      this.dropLocationMarker = null;
+    }
+
     if (this.pickupLocationMarker) {
       this.pickupLocationMarker.setMap(null);
       this.pickupLocationMarker = null;
     }
-    const pickupLocation =
-      await this.getLocationFromAddress(TEMP_PICKUP_ADDRESS);
+    const pickupLocation = await this.getLocationFromAddress(
+      systemConfigData.tenantConfig.shopAddress
+    );
+    const shopIcon = {
+      url: 'assets/img/shop-pin-icon.png',
+      scaledSize: new google.maps.Size(32, 44),
+    };
+    this.pickupLocationMarker = this.addMarker(pickupLocation, shopIcon);
+    this.pickupLocationMarker.setMap(this.newMap);
+  }
+
+  // HAPPY CASE 7
+  async handleStatusPickedUpItemFromShop(data: AssignedOrderDetails) {
+    if (this.pickupLocationMarker) {
+      this.pickupLocationMarker.setMap(null);
+      this.pickupLocationMarker = null;
+    }
+
+    if (this.dropLocationMarker) {
+      this.dropLocationMarker.setMap(null);
+      this.dropLocationMarker = null;
+    }
+    const dropLocation = await this.getLocationFromAddress(
+      data.order.appUserAddress.address
+    );
+    const homeIcon = {
+      url: 'assets/img/home-pin-icon.png',
+      scaledSize: new google.maps.Size(32, 44),
+    };
+    this.dropLocationMarker = this.addMarker(dropLocation, homeIcon);
+    this.dropLocationMarker.setMap(this.newMap);
+  }
+
+  // HAPPY CASE 8
+  async handleStatusDeliveredItemToCustomer(data: AssignedOrderDetails) {
+    const systemConfigData =
+      await this.storageService.get<SystemConfigData>('SYSTEM_CONFIG_DATA');
+    if (!systemConfigData) {
+      return;
+    }
+
+    if (this.pickupLocationMarker) {
+      this.pickupLocationMarker.setMap(null);
+      this.pickupLocationMarker = null;
+    }
+    const pickupLocation = await this.getLocationFromAddress(
+      systemConfigData.tenantConfig.shopAddress
+    );
     const shopIcon = {
       url: 'assets/img/shop-pin-icon.png',
       scaledSize: new google.maps.Size(32, 44),
@@ -332,57 +591,6 @@ export class TaskLocationPage implements AfterViewInit {
     };
     this.dropLocationMarker = this.addMarker(dropLocation, homeIcon);
     this.dropLocationMarker.setMap(this.newMap);
-  }
-
-  async handleStatusAccepted() {
-    if (this.dropLocationMarker) {
-      this.dropLocationMarker.setMap(null);
-      this.dropLocationMarker = null;
-    }
-    if (this.pickupLocationMarker) {
-      this.pickupLocationMarker.setMap(null);
-      this.pickupLocationMarker = null;
-    }
-    const pickupLocation =
-      await this.getLocationFromAddress(TEMP_PICKUP_ADDRESS);
-    const shopIcon = {
-      url: 'assets/img/shop-pin-icon.png',
-      scaledSize: new google.maps.Size(32, 44),
-    };
-    this.pickupLocationMarker = this.addMarker(pickupLocation, shopIcon);
-    this.pickupLocationMarker.setMap(this.newMap);
-    const pickupLocationPosition = this.pickupLocationMarker
-      .getPosition()
-      ?.toJSON();
-    if (pickupLocationPosition) {
-      this.setRoute(pickupLocationPosition);
-    }
-  }
-
-  async handleStatusInDelivery(data: AssignedOrderDetails) {
-    if (this.pickupLocationMarker) {
-      this.pickupLocationMarker.setMap(null);
-      this.pickupLocationMarker = null;
-    }
-    if (this.dropLocationMarker) {
-      this.dropLocationMarker.setMap(null);
-      this.dropLocationMarker = null;
-    }
-    const dropLocation = await this.getLocationFromAddress(
-      data.order.appUserAddress.address
-    );
-    const homeIcon = {
-      url: 'assets/img/home-pin-icon.png',
-      scaledSize: new google.maps.Size(32, 44),
-    };
-    this.dropLocationMarker = this.addMarker(dropLocation, homeIcon);
-    this.dropLocationMarker.setMap(this.newMap);
-    const dropLocationPosition = this.dropLocationMarker
-      .getPosition()
-      ?.toJSON();
-    if (dropLocationPosition) {
-      this.setRoute(dropLocationPosition);
-    }
   }
 
   getAssignedOrderDetails(id: string) {
@@ -395,20 +603,68 @@ export class TaskLocationPage implements AfterViewInit {
         this.buttonLabel = this.getButtonLabel(this.item.status);
         this.directionsDisplay.setMap(null);
         this.startMarker?.setMap(null);
-        if (response.data.order.status === DELIVERY_STATUS.NEW) {
-          this.handleStatusNew(response.data);
+        if (
+          response.data.order.status ===
+          ORDER_STATUS.DRIVER_ASSIGNED_FOR_ITEM_PICKUP
+        ) {
+          // HAPPY CASE 1
+          this.handleStatusAssignedForItemPickup(response.data);
           return;
         }
-        if (response.data.order.status === DELIVERY_STATUS.ACCEPTED) {
-          this.handleStatusAccepted();
+        if (
+          response.data.order.status ===
+          ORDER_STATUS.DRIVER_ACCEPTED_TO_PICK_UP_ITEM_FROM_CUSTOMER
+        ) {
+          // HAPPY CASE 2
+          this.handleStatusAcceptedToPickUpItemFromCustomer(response.data);
           return;
         }
-        if (response.data.order.status === DELIVERY_STATUS.IN_DELIVERY) {
-          this.handleStatusInDelivery(response.data);
+        if (
+          response.data.order.status ===
+          ORDER_STATUS.DRIVER_PICKED_UP_ITEM_FROM_CUSTOMER
+        ) {
+          // HAPPY CASE 3
+          this.handleStatusPickedUpItemFromCustomer();
           return;
         }
-        if (this.item.status === DELIVERY_STATUS.DELIVERED) {
-          this.handleStatusDelivered(response.data);
+        if (
+          response.data.order.status ===
+          ORDER_STATUS.DRIVER_DELIVERED_ITEM_TO_SHOP
+        ) {
+          // HAPPY CASE 4
+          this.handleStatusDeliveredItemToShop(response.data);
+          return;
+        }
+        if (
+          response.data.order.status ===
+          ORDER_STATUS.DRIVER_ASSIGNED_FOR_ITEM_DELIVERY
+        ) {
+          // HAPPY CASE 5
+          this.handleStatusAssignedForItemDelivery(response.data);
+          return;
+        }
+        if (
+          response.data.order.status ===
+          ORDER_STATUS.DRIVER_ACCEPTED_TO_PICK_UP_ITEM_FROM_SHOP
+        ) {
+          // HAPPY CASE 6
+          this.handleStatusAcceptedToPickUpItemFromShop();
+          return;
+        }
+        if (
+          response.data.order.status ===
+          ORDER_STATUS.DRIVER_PICKED_UP_ITEM_FROM_SHOP
+        ) {
+          // HAPPY CASE 7
+          this.handleStatusPickedUpItemFromShop(response.data);
+          return;
+        }
+        if (
+          response.data.order.status ===
+          ORDER_STATUS.DRIVER_DELIVERED_ITEM_TO_CUSTOMER
+        ) {
+          // HAPPY CASE 8
+          this.handleStatusDeliveredItemToCustomer(response.data);
         }
       }
     };
@@ -428,20 +684,68 @@ export class TaskLocationPage implements AfterViewInit {
         this.item.status = response.data.order.status;
         this.directionsDisplay.setMap(null);
         this.startMarker?.setMap(null);
-        if (response.data.order.status === DELIVERY_STATUS.NEW) {
-          this.handleStatusNew(response.data);
+        if (
+          response.data.order.status ===
+          ORDER_STATUS.DRIVER_ASSIGNED_FOR_ITEM_PICKUP
+        ) {
+          // HAPPY CASE 1
+          this.handleStatusAssignedForItemPickup(response.data);
           return;
         }
-        if (response.data.order.status === DELIVERY_STATUS.ACCEPTED) {
-          this.handleStatusAccepted();
+        if (
+          response.data.order.status ===
+          ORDER_STATUS.DRIVER_ACCEPTED_TO_PICK_UP_ITEM_FROM_CUSTOMER
+        ) {
+          // HAPPY CASE 2
+          this.handleStatusAcceptedToPickUpItemFromCustomer(response.data);
           return;
         }
-        if (response.data.order.status === DELIVERY_STATUS.IN_DELIVERY) {
-          this.handleStatusInDelivery(response.data);
+        if (
+          response.data.order.status ===
+          ORDER_STATUS.DRIVER_PICKED_UP_ITEM_FROM_CUSTOMER
+        ) {
+          // HAPPY CASE 3
+          this.handleStatusPickedUpItemFromCustomer();
           return;
         }
-        if (this.item.status === DELIVERY_STATUS.DELIVERED) {
-          this.handleStatusDelivered(response.data);
+        if (
+          response.data.order.status ===
+          ORDER_STATUS.DRIVER_DELIVERED_ITEM_TO_SHOP
+        ) {
+          // HAPPY CASE 4
+          this.handleStatusDeliveredItemToShop(response.data);
+          return;
+        }
+        if (
+          response.data.order.status ===
+          ORDER_STATUS.DRIVER_ASSIGNED_FOR_ITEM_DELIVERY
+        ) {
+          // HAPPY CASE 5
+          this.handleStatusAssignedForItemDelivery(response.data);
+          return;
+        }
+        if (
+          response.data.order.status ===
+          ORDER_STATUS.DRIVER_ACCEPTED_TO_PICK_UP_ITEM_FROM_SHOP
+        ) {
+          // HAPPY CASE 6
+          this.handleStatusAcceptedToPickUpItemFromShop();
+          return;
+        }
+        if (
+          response.data.order.status ===
+          ORDER_STATUS.DRIVER_PICKED_UP_ITEM_FROM_SHOP
+        ) {
+          // HAPPY CASE 7
+          this.handleStatusPickedUpItemFromShop(response.data);
+          return;
+        }
+        if (
+          response.data.order.status ===
+          ORDER_STATUS.DRIVER_DELIVERED_ITEM_TO_CUSTOMER
+        ) {
+          // HAPPY CASE 8
+          this.handleStatusDeliveredItemToCustomer(response.data);
         }
       }
     };

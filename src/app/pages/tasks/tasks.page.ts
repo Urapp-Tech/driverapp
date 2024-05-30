@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavigationExtras } from '@angular/router';
 import { NavController } from '@ionic/angular';
+import { ORDER_STATUSES } from 'src/app/utilities/constants';
 import {
   AssignedOrder,
   GetAssignedOrdersResponse,
@@ -21,25 +22,9 @@ export class TasksPage {
 
   trackById = trackById;
 
+  ORDER_STATUSES = ORDER_STATUSES;
+
   assignedOrders: Array<AssignedOrder> = [];
-
-  orderStatusText = {
-    New: 'New Order',
-    PickedUp: 'Order Picked Up',
-    'In-Delivery': 'Order In Delivery',
-    Delivered: 'Order Delivered',
-    Cancelled: 'Order Cancelled',
-    Accepted: 'Order Accepted',
-  };
-
-  orderStatusColor = {
-    New: '#6EE7B7',
-    PickedUp: '#D8B4FE',
-    'In-Delivery': '#FDBA74',
-    Delivered: '#D1D5DB',
-    Cancelled: '#FCA5A5',
-    Accepted: '#93C5FD',
-  };
 
   /* getCssColor(val: any) {
     const cssVars = getComputedStyle(document.documentElement);

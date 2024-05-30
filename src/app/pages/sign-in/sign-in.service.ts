@@ -11,7 +11,7 @@ export class SignInService {
   signIn(signInPayload: Omit<SignInPayload, 'tenant'>) {
     const signInPayloadWithTenant = {
       ...signInPayload,
-      tenant: environment.tenant,
+      tenant: environment.tenantId,
     };
     return this.httpClient.post<SignInResponse>(
       API_PATHS.login(),

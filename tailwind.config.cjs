@@ -25,11 +25,17 @@ module.exports = {
           'ion-bg': (value) => ({
             '--background': value,
           }),
-          'ion-bg-checked': (value) => ({
-            '--background-checked': value,
+          'ion-handle-bg': (value) => ({
+            '--handle-background': value,
           }),
           'ion-handle-bg-checked': (value) => ({
             '--handle-background-checked': value,
+          }),
+          'ion-track-bg': (value) => ({
+            '--track-background': value,
+          }),
+          'ion-track-bg-checked': (value) => ({
+            '--track-background-checked': value,
           }),
           'ion-text': (value) => ({
             '--color': value,

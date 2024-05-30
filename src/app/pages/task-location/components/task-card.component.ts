@@ -6,7 +6,8 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { DeliveryStatus } from 'src/app/types/tasks.types';
+import { OrderStatus } from 'src/app/types/tasks.types';
+import { ORDER_STATUSES } from 'src/app/utilities/constants';
 
 @Component({
   selector: 'app-task-card',
@@ -18,7 +19,7 @@ export class TaskCardComponent implements OnChanges {
 
   @Input() orderNumber!: number;
 
-  @Input() orderStatus: DeliveryStatus = 'New';
+  @Input() orderStatus: OrderStatus = 'Driver-Assigned-For-Item-Pickup';
 
   @Input() customerPhone!: string;
 
@@ -32,23 +33,7 @@ export class TaskCardComponent implements OnChanges {
 
   dropLocationAddress!: string;
 
-  orderStatusText = {
-    New: 'New Order',
-    PickedUp: 'Order Picked Up',
-    'In-Delivery': 'Order In Delivery',
-    Delivered: 'Order Delivered',
-    Cancelled: 'Order Cancelled',
-    Accepted: 'Order Accepted',
-  };
-
-  orderStatusColor = {
-    New: '#6EE7B7',
-    PickedUp: '#D8B4FE',
-    'In-Delivery': '#FDBA74',
-    Delivered: '#D1D5DB',
-    Cancelled: '#FCA5A5',
-    Accepted: '#93C5FD',
-  };
+  ORDER_STATUSES = ORDER_STATUSES;
 
   async getFormattedAddress(position: google.maps.LatLng) {
     const geocoder = new google.maps.Geocoder();

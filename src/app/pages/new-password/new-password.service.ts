@@ -14,7 +14,7 @@ export class NewPasswordService {
   resetPassword(partialNewPasswordPayload: Omit<NewPasswordPayload, 'tenant'>) {
     const forgotPasswordPayload: NewPasswordPayload = {
       ...partialNewPasswordPayload,
-      tenant: environment.tenant,
+      tenant: environment.tenantId,
     };
     return this.httpClient.post<NewPasswordResponse>(
       API_PATHS.resetPassword(),

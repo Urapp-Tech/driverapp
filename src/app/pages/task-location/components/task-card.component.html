@@ -1,12 +1,15 @@
-<div class="item" [ngStyle]="{ 'border-color': orderStatusColor[orderStatus] }">
+<div
+  class="item"
+  [ngStyle]="{ 'border-color': ORDER_STATUSES.get(orderStatus)?.color }"
+>
   <div class="item-name">
     {{ orderName }}
   </div>
   <div
     class="item-badge"
-    [ngStyle]="{ 'background-color': orderStatusColor[orderStatus] }"
+    [ngStyle]="{ 'background-color': ORDER_STATUSES.get(orderStatus)?.color }"
   >
-    {{ orderStatusText[orderStatus] }}
+    {{ ORDER_STATUSES.get(orderStatus)?.title }}
   </div>
 
   <div>

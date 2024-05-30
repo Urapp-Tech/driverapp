@@ -1,4 +1,4 @@
-import { DELIVERY_STATUS } from '../utilities/constants';
+import { ORDER_STATUS } from '../utilities/constants';
 import { ValueOf } from './common.types';
 
 export type GetAssignedOrdersResponse = {
@@ -16,7 +16,7 @@ export type AssignedOrdersData = {
   totalResults: number;
 };
 
-export type DeliveryStatus = ValueOf<typeof DELIVERY_STATUS>;
+export type OrderStatus = ValueOf<typeof ORDER_STATUS>;
 
 export type AssignedOrder = {
   id: string;
@@ -24,7 +24,7 @@ export type AssignedOrder = {
   appOrder: AssignedOrderAppOrder;
   createdDate: string;
   createdBy: string;
-  status: DeliveryStatus;
+  status: OrderStatus;
   pickupDateTime?: string;
   dropDateTime?: string;
   appUserAddress: AssignedOrderAppUserAddress;

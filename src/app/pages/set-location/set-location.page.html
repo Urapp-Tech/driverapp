@@ -1,5 +1,8 @@
-<ion-header class="big-header h-[3.75rem]">
-  <ion-toolbar class="bg-container ion-text-center" color="none">
+<ion-header class="h-[3.75rem] bg-[var(--ion-color-primary)]">
+  <ion-toolbar
+    class="ion-text-center h-full bg-[image:url('assets/img/bg-circles.png')] bg-[size:cover]"
+    color="none"
+  >
     <ion-buttons slot="start">
       <ion-back-button> </ion-back-button>
       <ion-menu-button color="light"> </ion-menu-button>
@@ -7,7 +10,7 @@
     <ion-title class="text-white">Online </ion-title>
     <ion-buttons slot="end">
       <ion-toggle
-        class="ion-bg-[grey] ion-bg-checked-[lightgreen] ion-handle-bg-checked-[antiquewhite]"
+        class="ion-handle-bg-checked-white ion-handle-bg-white ion-track-bg-checked-[#34C759] ion-track-bg-white"
         justify="end"
         checked="true"
       >
@@ -18,8 +21,8 @@
 <ion-content #container>
   <div class="map" #map></div>
   <div class="lower-part">
-    <ion-button class="btn-full" expand="block" [routerLink]="['/tasks']"
-      >My Tasks
+    <ion-button class="btn-full" expand="block" [routerLink]="['/tasks']">
+      My Tasks
     </ion-button>
   </div>
 </ion-content>

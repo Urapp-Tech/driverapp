@@ -20,7 +20,7 @@
   <!-- <ion-list> -->
   <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm)">
     <div class="ion-padding-horizontal">
-      <ion-item>
+      <ion-item lines="none">
         <ion-input
           id="email"
           name="email"
@@ -33,10 +33,7 @@
         >
         </ion-input>
       </ion-item>
-      <ion-item>
-        <!-- <ion-label position="stacked">Input with clear button
-
-</ion-label> -->
+      <ion-item lines="none">
         <ion-input
           id="password"
           name="password"
@@ -45,15 +42,21 @@
           minlength="3"
           maxlength="30"
           errorText="Invalid Password"
-          [type]="isVisible ? 'text' : 'password'"
+          [type]="isPasswordVisible ? 'text' : 'password'"
         >
+          <ion-button
+            aria-label="Show/hide"
+            fill="clear"
+            slot="end"
+            (click)="isPasswordVisible = !isPasswordVisible"
+          >
+            <ion-icon
+              aria-hidden="true"
+              slot="icon-only"
+              [name]="isPasswordVisible ? 'eye-off' : 'eye'"
+            ></ion-icon>
+          </ion-button>
         </ion-input>
-        <ion-icon
-          item-right
-          [name]="isVisible ? 'eye-off' : 'eye'"
-          (click)="onEyeClick()"
-        >
-        </ion-icon>
       </ion-item>
     </div>
     <!--
