@@ -85,6 +85,7 @@ export class TaskLocationPage implements AfterViewInit {
 
   async addCurrentLocation() {
     // this.addMarker(this.currentLocation, carIcon);
+
     if (this.startMarker) {
       this.startMarker.setPosition(this.currentLocation);
     }
@@ -228,7 +229,7 @@ export class TaskLocationPage implements AfterViewInit {
     }
     const payload: SetOrderStatusPayload = {
       appOrderDelivery: this.orderDeliveryId,
-      status: ORDER_STATUS.DRIVER_ACCEPTED_TO_PICK_UP_ITEM_FROM_SHOP,
+      status: ORDER_STATUS.DRIVER_PICKED_UP_ITEM_FROM_SHOP,
     };
     this.setOrderStatus(payload);
   }
@@ -402,6 +403,8 @@ export class TaskLocationPage implements AfterViewInit {
     };
     this.pickupLocationMarker = this.addMarker(pickupLocation, homeIcon);
     this.pickupLocationMarker.setMap(this.newMap);
+
+    this.setRoute(pickupLocation);
   }
 
   // HAPPY CASE 3
@@ -430,6 +433,8 @@ export class TaskLocationPage implements AfterViewInit {
     };
     this.dropLocationMarker = this.addMarker(dropLocation, shopIcon);
     this.dropLocationMarker.setMap(this.newMap);
+
+    this.setRoute(dropLocation);
   }
 
   // HAPPY CASE 4
@@ -532,6 +537,8 @@ export class TaskLocationPage implements AfterViewInit {
     };
     this.pickupLocationMarker = this.addMarker(pickupLocation, shopIcon);
     this.pickupLocationMarker.setMap(this.newMap);
+
+    this.setRoute(pickupLocation);
   }
 
   // HAPPY CASE 7
@@ -554,6 +561,8 @@ export class TaskLocationPage implements AfterViewInit {
     };
     this.dropLocationMarker = this.addMarker(dropLocation, homeIcon);
     this.dropLocationMarker.setMap(this.newMap);
+
+    this.setRoute(dropLocation);
   }
 
   // HAPPY CASE 8
@@ -597,9 +606,9 @@ export class TaskLocationPage implements AfterViewInit {
     const handleResponse = async (
       response: GetAssignedOrderDetailsResponse
     ) => {
-      console.log('response :>> ', response);
       if (response.success) {
         this.item = response.data.order;
+
         this.buttonLabel = this.getButtonLabel(this.item.status);
         this.directionsDisplay.setMap(null);
         this.startMarker?.setMap(null);
@@ -667,6 +676,7 @@ export class TaskLocationPage implements AfterViewInit {
           this.handleStatusDeliveredItemToCustomer(response.data);
         }
       }
+      this.navController.back();
     };
     const handleError = (error: any) => {
       console.error('error :>> ', error);

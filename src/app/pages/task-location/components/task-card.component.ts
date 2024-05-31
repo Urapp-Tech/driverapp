@@ -33,12 +33,21 @@ export class TaskCardComponent implements OnChanges {
 
   dropLocationAddress!: string;
 
+  pickupLocationIcon!: 'HOME' | 'SHOP';
+
+  dropLocationIcon!: 'HOME' | 'SHOP';
+
   ORDER_STATUSES = ORDER_STATUSES;
 
   async getFormattedAddress(position: google.maps.LatLng) {
     const geocoder = new google.maps.Geocoder();
     const geocoderResponse = await geocoder.geocode({ location: position });
     return geocoderResponse.results[0].formatted_address;
+  }
+
+  getIconUrl(marker: google.maps.Marker) {
+    const icon = marker.getIcon() as google.maps.Icon;
+    return icon.url;
   }
 
   async ngOnChanges(changes: SimpleChanges) {
@@ -52,12 +61,22 @@ export class TaskCardComponent implements OnChanges {
       this.pickupLocationAddress = await this.getFormattedAddress(
         changedPickupLocationMarker.getPosition()
       );
+      this.pickupLocationIcon = changedPickupLocationMarker
+        .getIcon()
+        .url.includes('home-pin-icon.png')
+        ? 'HOME'
+        : 'SHOP';
     }
 
     if (changedDropLocationMarker) {
       this.dropLocationAddress = await this.getFormattedAddress(
         changedDropLocationMarker.getPosition()
       );
+      this.dropLocationIcon = changedDropLocationMarker
+        .getIcon()
+        .url.includes('home-pin-icon.png')
+        ? 'HOME'
+        : 'SHOP';
     }
   }
 }

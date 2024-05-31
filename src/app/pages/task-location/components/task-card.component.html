@@ -16,8 +16,7 @@
     <div class="item-details">
       <div class="item-number">Order Id: {{ orderNumber }}</div>
       <div class="customer-phone">
-        <ion-icon class="icon" src="../../../../assets/img/phone-icon.svg">
-        </ion-icon>
+        <ion-icon class="icon" src="assets/img/phone-icon.svg"> </ion-icon>
         <div class="text">{{ customerPhone }}</div>
       </div>
     </div>
@@ -28,7 +27,15 @@
         *ngIf="pickupLocationMarker && pickupLocationAddress"
         (click)="moveToLocation.emit(pickupLocationMarker)"
       >
-        <ion-icon class="address-icon" src="assets/img/shop-icon.svg">
+        <ion-icon
+          class="address-icon"
+          *ngIf="pickupLocationIcon"
+          [src]="
+            pickupLocationIcon === 'HOME'
+              ? 'assets/img/home-icon.svg'
+              : 'assets/img/shop-icon.svg'
+          "
+        >
         </ion-icon>
         <span class="address-text">
           {{ pickupLocationAddress | shorten: 62 : '...' }}
@@ -40,7 +47,15 @@
         *ngIf="dropLocationMarker && dropLocationAddress"
         (click)="moveToLocation.emit(dropLocationMarker)"
       >
-        <ion-icon class="address-icon" src="assets/img/home-icon.svg">
+        <ion-icon
+          class="address-icon"
+          *ngIf="dropLocationIcon"
+          [src]="
+            dropLocationIcon === 'HOME'
+              ? 'assets/img/home-icon.svg'
+              : 'assets/img/shop-icon.svg'
+          "
+        >
         </ion-icon>
         <div class="address-text">
           {{ dropLocationAddress | shorten: 62 : '...' }}
