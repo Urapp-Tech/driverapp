@@ -1,6 +1,12 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { IonRouterOutlet, NavController } from '@ionic/angular';
+import {
+  IonRouterOutlet,
+  ModalController,
+  ModalOptions,
+  NavController,
+} from '@ionic/angular';
+import { ConfirmationModal } from 'src/app/modals/confirmation/confirmation.modal';
 import { LocationService } from 'src/app/services/location.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { SystemConfigData } from 'src/app/types/app.types';
@@ -24,11 +30,12 @@ import { TaskLocationService } from './task-location.service';
 export class TaskLocationPage implements AfterViewInit {
   constructor(
     private readonly activatedRoute: ActivatedRoute,
-    private readonly navController: NavController,
-    private readonly locationService: LocationService,
-    private readonly taskLocationService: TaskLocationService,
     private readonly ionRouterOutlet: IonRouterOutlet,
-    private readonly storageService: StorageService
+    private readonly locationService: LocationService,
+    private readonly modalController: ModalController,
+    private readonly navController: NavController,
+    private readonly storageService: StorageService,
+    private readonly taskLocationService: TaskLocationService
   ) {}
 
   @ViewChild('map', { static: true })
@@ -48,7 +55,9 @@ export class TaskLocationPage implements AfterViewInit {
 
   orderDeliveryId!: string | null;
 
-  buttonLabel: string = 'Start Driving';
+  buttonLabel = 'Start Driving';
+
+  button2Label = '';
 
   dropLocationMarker: google.maps.Marker | null = null;
 
@@ -65,7 +74,8 @@ export class TaskLocationPage implements AfterViewInit {
     this.orderDeliveryId =
       this.activatedRoute.snapshot.queryParamMap.get('orderId');
     if (!this.orderDeliveryId) {
-      this.navController.back();
+      console.log(' this.orderDeliveryId :>> ', this.orderDeliveryId);
+      this.myGoBack('/tasks');
       return;
     }
     await this.initMap();
@@ -311,6 +321,97 @@ export class TaskLocationPage implements AfterViewInit {
       return 'Back';
     }
     return 'Start Driving';
+  }
+
+  button2Action() {
+    console.log('this.item.status :>> ', this.item.status);
+    if (this.item.status === ORDER_STATUS.DRIVER_ASSIGNED_FOR_ITEM_PICKUP) {
+      this.showConfirmationModal(
+        `Are You Sure You Don't Want To Pickup This Package ?`,
+        `Decline`,
+        `Back`,
+        () => {
+          if (!this.orderDeliveryId) {
+            return;
+          }
+          const payload: SetOrderStatusPayload = {
+            appOrderDelivery: this.orderDeliveryId,
+            status: ORDER_STATUS.DRIVER_DECLINED_TO_PICKUP_ITEM_FROM_CUSTOMER,
+          };
+          this.setOrderStatus(payload);
+        }
+      );
+      return;
+    }
+    if (this.item.status === ORDER_STATUS.DRIVER_PICKED_UP_ITEM_FROM_CUSTOMER) {
+      this.showConfirmationModal(
+        `Did You Returned Package To Customer`,
+        `Yes`,
+        `No`,
+        () => {
+          if (!this.orderDeliveryId) {
+            return;
+          }
+          const payload: SetOrderStatusPayload = {
+            appOrderDelivery: this.orderDeliveryId,
+            status: ORDER_STATUS.DRIVER_RETURNED_ITEM_TO_CUSTOMER,
+          };
+          this.setOrderStatus(payload);
+        }
+      );
+      return;
+    }
+    if (this.item.status === ORDER_STATUS.DRIVER_ASSIGNED_FOR_ITEM_DELIVERY) {
+      this.showConfirmationModal(
+        `Are You Sure You Don't Want To Deliver This Package ?`,
+        `Decline`,
+        `Back`,
+        () => {
+          if (!this.orderDeliveryId) {
+            return;
+          }
+          const payload: SetOrderStatusPayload = {
+            appOrderDelivery: this.orderDeliveryId,
+            status: ORDER_STATUS.DRIVER_DECLINED_TO_PICKUP_ITEM_FROM_SHOP,
+          };
+          this.setOrderStatus(payload);
+        }
+      );
+      return;
+    }
+    if (this.item.status === ORDER_STATUS.DRIVER_PICKED_UP_ITEM_FROM_SHOP) {
+      this.showConfirmationModal(
+        `Did You Returned Package To Shop`,
+        `Yes`,
+        `No`,
+        () => {
+          if (!this.orderDeliveryId) {
+            return;
+          }
+          const payload: SetOrderStatusPayload = {
+            appOrderDelivery: this.orderDeliveryId,
+            status: ORDER_STATUS.DRIVER_RETURNED_ITEM_TO_SHOP,
+          };
+          this.setOrderStatus(payload);
+        }
+      );
+    }
+  }
+
+  getButton2Label(status: OrderStatus) {
+    if (status === ORDER_STATUS.DRIVER_ASSIGNED_FOR_ITEM_PICKUP) {
+      return 'Decline';
+    }
+    if (status === ORDER_STATUS.DRIVER_PICKED_UP_ITEM_FROM_CUSTOMER) {
+      return 'Return';
+    }
+    if (status === ORDER_STATUS.DRIVER_ASSIGNED_FOR_ITEM_DELIVERY) {
+      return 'Decline';
+    }
+    if (status === ORDER_STATUS.DRIVER_PICKED_UP_ITEM_FROM_SHOP) {
+      return 'Return';
+    }
+    return '';
   }
 
   // startDriving() {
@@ -610,8 +711,10 @@ export class TaskLocationPage implements AfterViewInit {
         this.item = response.data.order;
 
         this.buttonLabel = this.getButtonLabel(this.item.status);
+        this.button2Label = this.getButton2Label(this.item.status);
         this.directionsDisplay.setMap(null);
         this.startMarker?.setMap(null);
+        console.log('this.item.status :>> ', this.item.status);
         if (
           response.data.order.status ===
           ORDER_STATUS.DRIVER_ASSIGNED_FOR_ITEM_PICKUP
@@ -674,9 +777,36 @@ export class TaskLocationPage implements AfterViewInit {
         ) {
           // HAPPY CASE 8
           this.handleStatusDeliveredItemToCustomer(response.data);
+          return;
+        }
+        if (
+          response.data.order.status ===
+          ORDER_STATUS.DRIVER_DECLINED_TO_PICKUP_ITEM_FROM_CUSTOMER
+        ) {
+          this.myGoBack('/tasks');
+          return;
+        }
+        if (
+          response.data.order.status ===
+          ORDER_STATUS.DRIVER_RETURNED_ITEM_TO_CUSTOMER
+        ) {
+          this.myGoBack('/tasks');
+          return;
+        }
+        if (
+          response.data.order.status ===
+          ORDER_STATUS.DRIVER_DECLINED_TO_PICKUP_ITEM_FROM_SHOP
+        ) {
+          this.myGoBack('/tasks');
+          return;
+        }
+        if (
+          response.data.order.status ===
+          ORDER_STATUS.DRIVER_RETURNED_ITEM_TO_SHOP
+        ) {
+          this.myGoBack('/tasks');
         }
       }
-      this.navController.back();
     };
     const handleError = (error: any) => {
       console.error('error :>> ', error);
@@ -691,6 +821,7 @@ export class TaskLocationPage implements AfterViewInit {
     const handleResponse = async (response: SetOrderStatusResponse) => {
       if (response.success) {
         this.buttonLabel = this.getButtonLabel(response.data.order.status);
+        this.button2Label = this.getButton2Label(response.data.order.status);
         this.item.status = response.data.order.status;
         this.directionsDisplay.setMap(null);
         this.startMarker?.setMap(null);
@@ -756,6 +887,34 @@ export class TaskLocationPage implements AfterViewInit {
         ) {
           // HAPPY CASE 8
           this.handleStatusDeliveredItemToCustomer(response.data);
+          return;
+        }
+        if (
+          response.data.order.status ===
+          ORDER_STATUS.DRIVER_DECLINED_TO_PICKUP_ITEM_FROM_CUSTOMER
+        ) {
+          this.myGoBack('/tasks');
+          return;
+        }
+        if (
+          response.data.order.status ===
+          ORDER_STATUS.DRIVER_RETURNED_ITEM_TO_CUSTOMER
+        ) {
+          this.myGoBack('/tasks');
+          return;
+        }
+        if (
+          response.data.order.status ===
+          ORDER_STATUS.DRIVER_DECLINED_TO_PICKUP_ITEM_FROM_SHOP
+        ) {
+          this.myGoBack('/tasks');
+          return;
+        }
+        if (
+          response.data.order.status ===
+          ORDER_STATUS.DRIVER_RETURNED_ITEM_TO_SHOP
+        ) {
+          this.myGoBack('/tasks');
         }
       }
     };
@@ -766,5 +925,33 @@ export class TaskLocationPage implements AfterViewInit {
       next: handleResponse,
       error: handleError,
     });
+  }
+
+  async showConfirmationModal(
+    text: string,
+    proceedButtonText: string,
+    cancelButtonText: string,
+    callBack: () => void
+  ) {
+    const modalOptions: ModalOptions = {
+      component: ConfirmationModal,
+      cssClass: 'confirmation-modal',
+      componentProps: {
+        text: text ?? 'Are You Sure ?',
+        proceedButtonText: proceedButtonText ?? 'Yes',
+        cancelButtonText: cancelButtonText ?? 'No',
+      },
+    };
+    const ionModalElement = await this.modalController.create(modalOptions);
+    await ionModalElement.present();
+    const overlayEventDetail = await ionModalElement.onDidDismiss<boolean>();
+
+    const shouldProceed = overlayEventDetail
+      ? Boolean(overlayEventDetail.data)
+      : false;
+
+    if (shouldProceed) {
+      callBack();
+    }
   }
 }

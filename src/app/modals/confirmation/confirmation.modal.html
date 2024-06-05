@@ -1,0 +1,36 @@
+<div
+  class="flex h-screen w-screen flex-col items-center justify-center bg-[rgba(0,_0,_0,_0.1)]"
+  (click)="onBackDropClicked($event)"
+>
+  <div
+    class="flex w-11/12 flex-col items-center justify-center rounded-lg bg-gray-50 p-4"
+    (click)="onContentClicked($event)"
+  >
+    <ion-icon
+      class="mb-4 text-8xl text-yellow-400"
+      name="warning-outline"
+    ></ion-icon>
+    <div
+      class="mb-4 text-center font-open-sans font-semibold text-[var(--color-secondary)]"
+    >
+      {{ text }}
+    </div>
+
+    <div class="flex w-full flex-row items-center justify-between gap-x-4">
+      <ion-button
+        class="mb-2 w-1/2 ion-bg-green-600 ion-text-green-50 ion-py-5"
+        expand="block"
+        (click)="cancel($event)"
+      >
+        {{cancelButtonText}}
+      </ion-button>
+      <ion-button
+        class="mb-2 w-1/2 ion-bg-red-600 ion-text-red-50 ion-py-5"
+        expand="block"
+        (click)="proceed($event)"
+      >
+        {{proceedButtonText}}
+      </ion-button>
+    </div>
+  </div>
+</div>

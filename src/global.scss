@@ -147,3 +147,8 @@ ion-menu-button {
   --color: var(--ion-color-primary-contrast);
   color: white;
 }
+
+// confirmation modal styles
+.confirmation-modal {
+  @apply ion-bg-transparent;
+}

@@ -12,6 +12,7 @@ module.exports = {
     extend: {
       fontFamily: {
         mont: ['Mont', 'sans-serif'],
+        'open-sans': ['Open Sans', 'sans-serif'],
       },
       rotate: {
         30: '30deg',

@@ -38,10 +38,12 @@ export class TasksPage {
       const matchingType: any = this.assignedOrders.find(
         (type: any) => type.type === order.status
       );
-      Object.keys(matchingType).forEach((key) => {
-        // eslint-disable-next-line no-param-reassign
-        order[key] = matchingType[key];
-      });
+      if (matchingType) {
+        Object.keys(matchingType).forEach((key) => {
+          // eslint-disable-next-line no-param-reassign
+          order[key] = matchingType[key];
+        });
+      }
     });
   }
 

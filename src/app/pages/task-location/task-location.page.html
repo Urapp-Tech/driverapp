@@ -14,6 +14,15 @@
   <div class="map" #map></div>
 
   <div class="lower-part">
+    <ion-button
+      class="btn-full"
+      expand="block"
+      *ngIf="button2Label"
+      (click)="button2Action()"
+    >
+      {{ button2Label }}
+    </ion-button>
+
     <ion-button class="btn-full" expand="block" (click)="buttonAction()">
       {{ buttonLabel }}
     </ion-button>

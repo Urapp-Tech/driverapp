@@ -111,10 +111,12 @@ export class TrackOrderPage {
       const matchingType: any = this.orderTypes.find(
         (type) => type.type === order.type
       );
-      Object.keys(matchingType).forEach((key) => {
-        // eslint-disable-next-line no-param-reassign
-        order[key] = matchingType[key];
-      });
+      if (matchingType) {
+        Object.keys(matchingType).forEach((key) => {
+          // eslint-disable-next-line no-param-reassign
+          order[key] = matchingType[key];
+        });
+      }
     });
   }
 }
