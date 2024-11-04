@@ -6,11 +6,7 @@
       "files": ["*.ts"],
       "parserOptions": {
         "project": ["tsconfig.json"],
-        "createDefaultProgram": true,
-        "ecmaVersion": "latest"
-      },
-      "env": {
-        "es6": true
+        "createDefaultProgram": true
       },
       "plugins": ["unused-imports", "simple-import-sort"],
       "extends": [

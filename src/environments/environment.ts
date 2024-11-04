@@ -6,20 +6,20 @@
 const DOMAIN = 'dev.urapptech.com';
 const PORT = ''; */
 
-const PROTOCOL = 'http';
-const DOMAIN = '192.168.8.68';
-const PORT = '3200';
-
 /* const PROTOCOL = 'http';
-const DOMAIN = 'localhost';
+const DOMAIN = '192.168.8.68';
 const PORT = '3200'; */
+
+const PROTOCOL = 'http';
+const DOMAIN = 'localhost';
+const PORT = '3200';
 
 const TransformedPort = PORT ? `:${PORT}` : '';
 
 export const environment = {
   production: false,
   baseURL: `${PROTOCOL}://${DOMAIN}${TransformedPort}`,
-  tenantId: '30f155f2-ded0-4fc2-897c-87dae511faf8',
+  tenantId: '2ce2aab8-374b-4371-93bd-a92e5b2bbdd9',
 };
 
 /*

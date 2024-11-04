@@ -1,0 +1,10 @@
+:host {
+  ion-header {
+    height: calc(3.5rem + var(--ion-safe-area-top));
+    .bg-container {
+      background: url(../../../assets/img/bg-circles.png);
+      background-size: cover;
+      height: 100%;
+    }
+  }
+}

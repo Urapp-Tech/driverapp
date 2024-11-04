@@ -1,23 +1,11 @@
-<ion-header class="h-[3.75rem] bg-[var(--ion-color-primary)]">
-  <ion-toolbar
-    class="ion-text-center h-full bg-[image:url('assets/img/bg-circles.png')] bg-[size:cover]"
-    color="none"
+<app-header type="NONE" headingType="TEXT" heading="Assigned's Tasks">
+  <ion-toggle
+    class="ion-handle-bg-checked-white ion-handle-bg-white ion-track-bg-checked-[#34C759] ion-track-bg-white"
+    justify="end"
+    checked="true"
   >
-    <ion-buttons slot="start">
-      <ion-back-button> </ion-back-button>
-      <ion-menu-button color="light"> </ion-menu-button>
-    </ion-buttons>
-    <ion-title class="text-white"> Assigned's Tasks </ion-title>
-    <ion-buttons slot="end">
-      <ion-toggle
-        class="ion-handle-bg-checked-white ion-handle-bg-white ion-track-bg-checked-[#34C759] ion-track-bg-white"
-        justify="end"
-        checked="true"
-      >
-      </ion-toggle>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+  </ion-toggle>
+</app-header>
 
 <ion-content>
   <ng-container *ngIf="assignedOrders.length">
@@ -40,7 +28,7 @@
           </ion-row>
           <ion-row
             class="text-xs"
-            [ngStyle]="{'color': ORDER_STATUSES.get(order.status)?.color}"
+            [ngStyle]="{ color: ORDER_STATUSES.get(order.status)?.color }"
           >
             {{ ORDER_STATUSES.get(order.status)?.title }}
           </ion-row>

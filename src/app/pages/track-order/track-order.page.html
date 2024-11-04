@@ -1,14 +1,12 @@
-<ion-header class="big-header h-[3.75rem]">
-  <ion-toolbar class="bg-container ion-text-center" color="none">
-    <ion-buttons slot="start">
-      <ion-back-button> </ion-back-button>
-    </ion-buttons>
-    <ion-title class="text-white">Track Order </ion-title>
-    <ion-buttons slot="end">
-      <ion-icon class="bag-icon" name="bag-outline"> </ion-icon>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<app-header type="BACK" headingType="TEXT" heading="Track Order">
+  <ion-toggle
+    class="opacity-0 ion-handle-bg-checked-white ion-handle-bg-white ion-track-bg-checked-[#34C759] ion-track-bg-white"
+    justify="end"
+    checked="true"
+    disabled
+  >
+  </ion-toggle>
+</app-header>
 
 <ion-content>
   <ion-row class="bg-[lightgrey] px-1.5 py-1">
@@ -31,10 +29,10 @@
       </ion-label>
     </ion-col>
   </ion-row>
-  <div class="purchased-item" *ngFor="let item of actions; let i=index;">
+  <div class="purchased-item" *ngFor="let item of actions; let i = index">
     <ion-row
-      [style.filter]="i>2?'grayscale(100%)':'none'"
-      [style.opacity]="i>2?'0.4':'1'"
+      [style.filter]="i > 2 ? 'grayscale(100%)' : 'none'"
+      [style.opacity]="i > 2 ? '0.4' : '1'"
     >
       <ion-col
         class="quantity-col bg-[linear-gradient(to_right,_black_50%,_transparent_50%)_no-repeat_center/1px_100%] text-center text-sm"
@@ -47,14 +45,14 @@
               class="bg-white"
               name="checkmark-circle-outline"
               size="large"
-              *ngIf="i<3"
+              *ngIf="i < 3"
             >
             </ion-icon>
             <ion-icon
               class="bg-white"
               name="ellipse-outline"
               size="large"
-              *ngIf="i>2"
+              *ngIf="i > 2"
             >
             </ion-icon>
           </ion-col>
@@ -88,8 +86,14 @@
         </ion-row>
         <ion-row>
           <ion-col>
-            {{ item.time !== 'Date, Time' ? (item.time | date: 'HH:mm, MMM dd
-            YY') : item.time }}
+            {{
+              item.time !== 'Date, Time'
+                ? (item.time
+                  | date
+                    : 'HH:mm, MMM dd
+            YY')
+                : item.time
+            }}
           </ion-col>
         </ion-row>
       </ion-col>

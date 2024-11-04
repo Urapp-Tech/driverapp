@@ -19,5 +19,13 @@
     "$CODE_GUIDE",
     "$DEFAULT",
     "$ANGULAR"
+  ],
+  "overrides": [
+    {
+      "files": "*.html",
+      "options": {
+        "parser": "angular"
+      }
+    }
   ]
 }

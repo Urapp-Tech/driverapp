@@ -1,0 +1,35 @@
+<ion-header
+  class="h-14 bg-[--color-primary]"
+  [ngClass]="{ 'ion-no-border': !border }"
+>
+  <ion-toolbar class="bg-container ion-text-center" color="none">
+    <ion-buttons slot="start">
+      <ng-container *ngIf="type === 'MENU'">
+        <ion-button (click)="toggleMenu()">
+          <ion-icon name="menu" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ng-container>
+
+      <ng-container *ngIf="type === 'BACK'">
+        <ion-button (click)="goBack(defaultHref)">
+          <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ng-container>
+    </ion-buttons>
+    <ion-title class="text-[--color-background] ion-text-[--color-background]">
+      <ng-container *ngIf="headingType === 'IMAGE'">
+        <img class="mt-1 h-10" alt="" [src]="heading" />
+      </ng-container>
+      <ng-container *ngIf="headingType === 'TEXT'">
+        <ion-title
+          class="px-0 text-[--color-background] [-webkit-padding-end:0rem] [-webkit-padding-start:0rem]"
+        >
+          {{ heading }}
+        </ion-title>
+      </ng-container>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ng-content></ng-content>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
