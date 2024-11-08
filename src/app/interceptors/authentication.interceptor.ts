@@ -27,8 +27,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
   }
 
   attachHeaders(request: HttpRequest<any>): HttpRequest<any> {
-    const userData = this.userService.getUser();
-    const token: string | undefined = userData?.token;
+    const token = this.userService.getToken();
     let modifiedRequest = request;
     if (token) {
       modifiedRequest = modifiedRequest.clone({

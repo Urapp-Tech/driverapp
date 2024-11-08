@@ -1,4 +1,4 @@
-<app-header type="NONE" heading="Online" headingType="TEXT">
+<app-header type="BRANCH" heading="Online" headingType="TEXT">
   <ion-buttons>
     <ion-toggle
       class="ion-handle-bg-checked-white ion-handle-bg-white ion-track-bg-checked-[#34C759] ion-track-bg-white"
@@ -12,7 +12,7 @@
 <ion-content #container>
   <div class="map" #map></div>
   <div class="lower-part">
-    <ion-button class="btn-full" expand="block" [routerLink]="['/tasks']">
+    <ion-button class="btn-full" expand="block" routerLink="/tasks">
       My Tasks
     </ion-button>
   </div>

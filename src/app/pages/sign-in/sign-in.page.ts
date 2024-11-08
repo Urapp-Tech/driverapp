@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NavController } from '@ionic/angular';
@@ -30,14 +31,11 @@ export class SignInPage {
     const handleLoginResponse = (response: SignInResponse) => {
       if (response.code === 200) {
         this.userService.setUser(response.data);
-        this.navController.navigateRoot('/set-location');
+        this.navController.navigateRoot('/select-branch');
       }
     };
-    const handleLoginError = (error: any) => {
-      console.log(
-        `file: sign-in.page.ts:23 -> SignInPage -> handleLoginError -> error:`,
-        error
-      );
+    const handleLoginError = (error: HttpErrorResponse) => {
+      console.error('error :>> ', error);
     };
     this.signInService.signIn(signInPayload).subscribe({
       next: handleLoginResponse,

@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AppService } from './services/app.service';
 import { StorageService } from './services/storage.service';
@@ -19,13 +20,13 @@ export class AppComponent implements OnInit {
   }
 
   getSystemConfig() {
-    const handleResponse = (response: GetSystemConfigResponse) => {
+    const handleResponse = async (response: GetSystemConfigResponse) => {
       if (response.success) {
-        this.storageService.set('SYSTEM_CONFIG_DATA', response.data);
+        await this.storageService.set('SYSTEM_CONFIG_DATA', response.data);
       }
     };
 
-    const handleError = (error: any) => {
+    const handleError = (error: HttpErrorResponse) => {
       console.error('error :>> ', error);
     };
 

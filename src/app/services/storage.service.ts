@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 
-type Key = 'USER' | 'SYSTEM_CONFIG_DATA';
+type Key =
+  | 'AUTHENTICATION_TOKEN'
+  | 'BRANCH'
+  | 'IS_BRANCH_SINGLE'
+  | 'SYSTEM_CONFIG_DATA'
+  | 'USER';
 
 function addKeyPrefix(key: string) {
   const prefix = 'DRIVER_APP';

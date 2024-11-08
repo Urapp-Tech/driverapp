@@ -9,7 +9,17 @@ export class LocationService {
   async getCurrentPosition(
     options?: PositionOptions
   ): Promise<[number, number]> {
+    const hasRequestPermissions = await Geolocation.requestPermissions();
+    console.log(
+      `LocationService -> hasRequestPermissions:`,
+      hasRequestPermissions
+    );
+
     const hasLocationPermissions = await Geolocation.checkPermissions();
+    console.log(
+      `LocationService -> hasLocationPermissions:`,
+      hasLocationPermissions
+    );
 
     if (hasLocationPermissions.coarseLocation === 'granted') {
       const getCurrentPositionPromise = Geolocation.getCurrentPosition(options);
@@ -20,7 +30,7 @@ export class LocationService {
       }
       return [position.coords.latitude, position.coords.longitude];
     }
-    const hasRequestPermissions = await Geolocation.requestPermissions();
+    // const hasRequestPermissions = await Geolocation.requestPermissions();
     if (hasRequestPermissions.coarseLocation === 'granted') {
       return this.getCurrentPosition();
     }

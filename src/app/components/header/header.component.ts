@@ -14,7 +14,7 @@ export class HeaderComponent {
     private readonly navController: NavController
   ) {}
 
-  @Input({ required: true }) type: 'MENU' | 'BACK' | 'NONE' = 'NONE';
+  @Input({ required: true }) type: 'MENU' | 'BACK' | 'BRANCH' | 'NONE' = 'NONE';
 
   @Input({ required: true }) headingType: 'IMAGE' | 'TEXT' = 'TEXT';
 
@@ -31,5 +31,9 @@ export class HeaderComponent {
 
   async toggleMenu() {
     await this.menuController.toggle();
+  }
+
+  async navigateToSelectBranch() {
+    await this.navController.navigateRoot('/select-branch');
   }
 }

@@ -6,7 +6,14 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'sign-in',
+    redirectTo: 'set-location',
+  },
+  {
+    path: 'select-branch',
+    loadChildren: () =>
+      import('./pages/select-branch/select-branch.module').then(
+        (m) => m.SelectBranchPageModule
+      ),
   },
   {
     path: 'sign-in',

@@ -4,6 +4,12 @@
 >
   <ion-toolbar class="bg-container ion-text-center" color="none">
     <ion-buttons slot="start">
+      <ng-container *ngIf="type === 'BRANCH'">
+        <ion-button (click)="navigateToSelectBranch()">
+          <ion-icon name="storefront-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ng-container>
+
       <ng-container *ngIf="type === 'MENU'">
         <ion-button (click)="toggleMenu()">
           <ion-icon name="menu" slot="icon-only"></ion-icon>

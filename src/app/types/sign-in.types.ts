@@ -23,5 +23,4 @@ export type SignInData = {
   lastName: string;
   postalCode: string;
   userType: string;
-  token: string;
 };

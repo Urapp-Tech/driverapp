@@ -10,6 +10,6 @@ export const unauthenticatedGuard: CanActivateFn = async () => {
   if (!auth) {
     return true;
   }
-  navController.navigateBack(['/tasks']);
+  navController.navigateBack('/set-location');
   return false;
 };

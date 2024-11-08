@@ -7,6 +7,7 @@ export const authenticationGuard: CanActivateFn = async () => {
   const userService = inject(UserService);
   const navController = inject(NavController);
   const auth = await userService.isAuth();
+  console.log('auth :>> ', auth);
   if (auth) {
     return true;
   }

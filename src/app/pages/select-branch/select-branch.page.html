@@ -1,0 +1,29 @@
+<ion-content class="relative">
+  <div
+    class="bg-background absolute bottom-[8vh] left-[6vw] -z-10 size-[74vh] rounded-full"
+  ></div>
+  <div
+    class="mx-6 mb-[6vh] mt-[10vh] max-w-[75vw] font-mont text-3xl text-[#141619]"
+  >
+    Select a branch to continue !
+  </div>
+
+  <div class="mx-6 flex flex-col gap-y-6">
+    <ng-container *ngFor="let branch of branches">
+      <ion-button
+        class="flex min-h-24 items-center text-start text-[#141619] ion-bg-white ion-rounded-2xl ion-shadow-md ion-py-12"
+        type="button"
+        expand="block"
+        (click)="setBranch(branch)"
+      >
+        <div class="grow font-mont font-extrabold text-[#141619]">
+          {{ branch.name }}
+        </div>
+        <ion-icon
+          class="bg-background text-primary rounded-full p-4 text-3xl"
+          name="storefront"
+        ></ion-icon>
+      </ion-button>
+    </ng-container>
+  </div>
+</ion-content>
