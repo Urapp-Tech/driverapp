@@ -7,7 +7,15 @@ const config: CapacitorConfig = {
   appName: 'driver-app',
   webDir: 'www',
   server: {
-    androidScheme: 'https',
+    allowNavigation: [
+      '*.urapptech.com',
+      'https://dev.urapptech.com',
+      'dev.urapptech.com',
+    ],
+    cleartext: true,
+  },
+  android: {
+    allowMixedContent: true,
   },
 };
 

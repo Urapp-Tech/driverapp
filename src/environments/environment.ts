@@ -6,13 +6,13 @@
 const DOMAIN = 'dev.urapptech.com';
 const PORT = ''; */
 
-const PROTOCOL = 'http';
-const DOMAIN = '192.168.8.14';
-const PORT = '3200';
-
 /* const PROTOCOL = 'http';
-const DOMAIN = 'localhost';
+const DOMAIN = '192.168.8.68';
 const PORT = '3200'; */
+
+const PROTOCOL = 'http';
+const DOMAIN = 'localhost';
+const PORT = '3200';
 
 const TransformedPort = PORT ? `:${PORT}` : '';
 

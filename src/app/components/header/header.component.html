@@ -1,8 +1,8 @@
 <ion-header
-  class="h-14 bg-[--color-primary]"
+  class="bg-[--color-primary]"
   [ngClass]="{ 'ion-no-border': !border }"
 >
-  <ion-toolbar class="bg-container ion-text-center" color="none">
+  <ion-toolbar class="bg-container h-full bg-cover text-center" color="none">
     <ion-buttons slot="start">
       <ng-container *ngIf="type === 'BRANCH'">
         <ion-button (click)="navigateToSelectBranch()">
