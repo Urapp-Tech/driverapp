@@ -7,5 +7,5 @@ const TransformedPort = PORT ? `:${PORT}` : '';
 export const environment = {
   production: true,
   baseURL: `${PROTOCOL}://${DOMAIN}${TransformedPort}`,
-  tenantId: '30f155f2-ded0-4fc2-897c-87dae511faf8',
+  tenantId: '914b5057-4fe0-408a-bf30-8acf5e7eecc5',
 };

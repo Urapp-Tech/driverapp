@@ -48,6 +48,8 @@ export class TasksPage {
   }
 
   navigateToNextPage(item: AssignedOrder) {
+    console.log('order', item);
+
     const navigationExtras: NavigationExtras = {
       replaceUrl: false,
       queryParams: { orderId: item.id },
@@ -64,9 +66,8 @@ export class TasksPage {
     const handleError = (error: any) => {
       console.error('error :>> ', error);
     };
-    this.tasksService.getAssignedOrders().subscribe({
-      next: handleResponse,
-      error: handleError,
-    });
+    this.tasksService
+      .getAssignedOrders()
+      .subscribe({ next: handleResponse, error: handleError });
   }
 }

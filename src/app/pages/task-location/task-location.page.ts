@@ -85,10 +85,7 @@ export class TaskLocationPage implements AfterViewInit {
   async getCurrentLocation() {
     const [latitude, longitude] =
       await this.locationService.getCurrentPosition();
-    this.currentLocation = {
-      lat: latitude,
-      lng: longitude,
-    };
+    this.currentLocation = { lat: latitude, lng: longitude };
     console.log('currentLocation :>> ', this.currentLocation);
     return this.currentLocation;
   }
@@ -197,6 +194,8 @@ export class TaskLocationPage implements AfterViewInit {
       appOrderDelivery: this.orderDeliveryId,
       status: ORDER_STATUS.DRIVER_ACCEPTED_TO_PICK_UP_ITEM_FROM_CUSTOMER,
     };
+    console.log('payload', payload);
+
     this.setOrderStatus(payload);
   }
 
@@ -256,6 +255,8 @@ export class TaskLocationPage implements AfterViewInit {
   }
 
   buttonAction() {
+    console.log('itemmmm', this.item);
+
     if (this.item.status === ORDER_STATUS.DRIVER_ASSIGNED_FOR_ITEM_PICKUP) {
       this.acceptToPickUpItemFromCustomer();
       return;
@@ -811,10 +812,9 @@ export class TaskLocationPage implements AfterViewInit {
     const handleError = (error: any) => {
       console.error('error :>> ', error);
     };
-    this.taskLocationService.getAssignedOrderDetails(id).subscribe({
-      next: handleResponse,
-      error: handleError,
-    });
+    this.taskLocationService
+      .getAssignedOrderDetails(id)
+      .subscribe({ next: handleResponse, error: handleError });
   }
 
   setOrderStatus(payload: SetOrderStatusPayload) {
@@ -921,10 +921,9 @@ export class TaskLocationPage implements AfterViewInit {
     const handleError = (error: any) => {
       console.error('error :>> ', error);
     };
-    this.taskLocationService.setOrderStatus(payload).subscribe({
-      next: handleResponse,
-      error: handleError,
-    });
+    this.taskLocationService
+      .setOrderStatus(payload)
+      .subscribe({ next: handleResponse, error: handleError });
   }
 
   async showConfirmationModal(

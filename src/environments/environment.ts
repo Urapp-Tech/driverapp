@@ -11,8 +11,8 @@ const DOMAIN = '192.168.8.68';
 const PORT = '3200'; */
 
 const PROTOCOL = 'http';
-const DOMAIN = 'localhost';
-const PORT = '3200';
+const DOMAIN = '192.168.8.44';
+const PORT = '3300';
 
 const TransformedPort = PORT ? `:${PORT}` : '';
 

@@ -28,6 +28,8 @@ export class AuthenticationInterceptor implements HttpInterceptor {
 
   attachHeaders(request: HttpRequest<any>): HttpRequest<any> {
     const token = this.userService.getToken();
+    console.log('token', token);
+
     let modifiedRequest = request;
     if (token) {
       modifiedRequest = modifiedRequest.clone({
